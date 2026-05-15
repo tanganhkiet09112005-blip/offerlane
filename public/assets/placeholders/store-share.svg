@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240" role="img" aria-labelledby="title">
+  <title id="title">Store deals placeholder</title>
+  <rect width="400" height="240" rx="24" fill="#eef1f6"/>
+  <rect x="46" y="50" width="308" height="140" rx="18" fill="#ffffff" stroke="#dde3ec" stroke-width="6"/>
+  <path d="M78 94h156" stroke="#0c4a4e" stroke-width="12" stroke-linecap="round"/>
+  <path d="M78 132h112" stroke="#5c6678" stroke-width="10" stroke-linecap="round" opacity="0.55"/>
+  <path d="M278 84l24 24 24-24 18 18-24 24 24 24-18 18-24-24-24 24-18-18 24-24-24-24 18-18Z" fill="#e85d4c"/>
+</svg>

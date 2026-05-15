@@ -1,0 +1,5 @@
+storeSlug,offerId,type,badge,headline,summary,couponCode,ctaLabel,expiryDate,outboundUrl,popularity,createdAt,engagementCount,engagementLabel
+carpuride,offer_001,coupon,Discount Code,Get 30% Off Sitewide,Use this coupon to save 30%,SAVE30,Show Coupon,2026-06-30,https://affiliate-link.com/carpuride,58,2026-05-15,58,Times Loyal
+carpuride,offer_002,deal,Special Offer,Limited Time Deal Up To $160 Off,Click to get the deal,,Get Deal,2026-06-30,https://affiliate-link.com/carpuride-sale,49,2026-05-14,49,Times Loyal
+sample-tech,offer_st_001,coupon,Discount Code,15% Off First Order,New shoppers save 15% with this code,TECH15,Show Coupon,2026-07-01,https://affiliate-link.com/sample-tech,32,2026-05-10,32,Times Loyal
+sample-tech,offer_st_002,deal,Special Offer,Bundle Deal Save $50,Selected bundles only,,Get Deal,2026-06-15,https://affiliate-link.com/sample-tech-bundle,21,2026-05-08,21,Times Loyal

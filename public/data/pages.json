@@ -1,0 +1,162 @@
+{
+  "about": {
+    "title": "About OfferLane",
+    "lead": "We help shoppers find verified affiliate deals, coupon codes, and partner offers without clutter.",
+    "sections": [
+      {
+        "heading": "What we do",
+        "body": "OfferLane curates store-level promo pages and product catalogs that link to trusted merchant partners. We do not process checkout on this site — savings happen when you visit partners through our tracked links."
+      },
+      {
+        "heading": "How we review offers",
+        "body": "Our editorial team checks expiry dates, offer types, and merchant terms before listing. Popularity signals (such as engagement counts) help sort deals but do not replace reading partner terms at checkout."
+      },
+      {
+        "heading": "Affiliate transparency",
+        "body": "We may earn a commission when you click outbound links or redeem codes. This supports our research and does not increase your price when promotions are applied correctly on the partner site."
+      }
+    ]
+  },
+  "terms": {
+    "title": "Terms of Use",
+    "lead": "By using OfferLane you agree to the following terms. Please read them carefully.",
+    "sections": [
+      {
+        "heading": "Service scope",
+        "body": "OfferLane provides informational listings and outbound links to third-party merchants. We are not the seller of products listed unless explicitly stated."
+      },
+      {
+        "heading": "Accuracy of offers",
+        "body": "Coupons and prices can change without notice. Always confirm the final total on the merchant checkout page before completing a purchase."
+      },
+      {
+        "heading": "Limitation of liability",
+        "body": "OfferLane is provided as-is. We are not liable for merchant fulfillment, product defects, or disputes arising from third-party transactions."
+      }
+    ]
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lead": "We respect your privacy and collect only what is needed to operate the site and measure performance.",
+    "sections": [
+      {
+        "heading": "Information we collect",
+        "body": "We may collect email addresses when you subscribe to newsletters, analytics events when you interact with pages, and standard server logs (IP, browser type, timestamps)."
+      },
+      {
+        "heading": "Cookies and analytics",
+        "body": "We use cookies and similar technologies for analytics, ad measurement, and remembering preferences. You can control cookies through your browser settings."
+      },
+      {
+        "heading": "Your choices",
+        "body": "You may unsubscribe from marketing emails at any time. Contact us to request access or deletion of personal data where applicable under local law."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contact Us",
+    "lead": "Questions about an offer, partnership, or your privacy rights? Reach out below.",
+    "sections": [
+      {
+        "heading": "General support",
+        "body": "Email: support@offerlane.example — We aim to reply within 2 business days."
+      },
+      {
+        "heading": "Partnerships",
+        "body": "Merchants and affiliate networks: partners@offerlane.example"
+      },
+      {
+        "heading": "Mailing address",
+        "body": "OfferLane Media Group, 1200 Market Street, Suite 400, San Francisco, CA 94103, USA"
+      }
+    ]
+  },
+  "blogs": {
+    "title": "Blogs",
+    "lead": "Guides on stacking coupons, comparing affiliate products, and seasonal deal calendars.",
+    "sections": [],
+    "posts": [
+      {
+        "slug": "stack-seasonal-coupons",
+        "title": "How to stack seasonal coupons",
+        "excerpt": "Learn when partner terms allow combining percentage codes with free-shipping offers.",
+        "date": "2026-05-01"
+      },
+      {
+        "slug": "smart-home-deals-guide",
+        "title": "Smart home deals: what to check before you buy",
+        "excerpt": "Compatibility, warranty, and outbound merchant reputation matter as much as price.",
+        "date": "2026-04-18"
+      }
+    ]
+  },
+  "join": {
+    "title": "Join OfferLane",
+    "lead": "Create a free account to save favorite stores and get deal alerts.",
+    "sections": [
+      {
+        "heading": "Member benefits",
+        "body": "Bookmark stores, rate merchants, and receive optional email digests when new coupons are published."
+      },
+      {
+        "heading": "Getting started",
+        "body": "Use the Sign in button in the header and choose Join Now, or continue with a social provider when available."
+      }
+    ]
+  },
+  "forgot-password": {
+    "title": "Forgot Password",
+    "lead": "Enter your account email and we will send a reset link if the address is registered.",
+    "sections": [
+      {
+        "heading": "Reset instructions",
+        "body": "Check your inbox and spam folder within 15 minutes. Links expire after 24 hours for security."
+      }
+    ]
+  },
+  "categories": {
+    "title": "All Categories",
+    "lead": "Browse deals and products by topic.",
+    "sections": [],
+    "categoryList": [
+      {
+        "slug": "smart-home",
+        "title": "Smart Home",
+        "description": "Connected lighting, climate monitors, security accessories, and hub-compatible gear."
+      },
+      {
+        "slug": "auto-tech",
+        "title": "Auto Tech",
+        "description": "In-car displays, dash cams, mounts, and driver convenience accessories."
+      },
+      {
+        "slug": "wellness",
+        "title": "Wellness",
+        "description": "Recovery, sleep, air quality, and everyday health tech from partner brands."
+      },
+      {
+        "slug": "outdoor",
+        "title": "Outdoor",
+        "description": "GPS tags, packs, trail gadgets, and seasonal outdoor partner promotions."
+      },
+      {
+        "slug": "office",
+        "title": "Office",
+        "description": "Desk hubs, ergonomic stands, and productivity accessories for hybrid work."
+      }
+    ]
+  },
+  "stores": {
+    "title": "All Stores",
+    "lead": "Browse merchant coupon and deal pages.",
+    "sections": [],
+    "storeList": [
+      {
+        "slug": "carpuride",
+        "name": "CarPuride",
+        "description": "In-car smart displays and accessories.",
+        "href": "/store/carpuride"
+      }
+    ]
+  }
+}

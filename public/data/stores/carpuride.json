@@ -1,0 +1,73 @@
+{
+  "featuredStores": [],
+  "relatedStores": [],
+  "shareBlock": {
+    "title": "Share Now Stores",
+    "image": "/assets/placeholders/store-share.svg",
+    "description": "Discover curated deals and offers from this store.",
+    "ctaLabel": "Sign Up",
+    "ctaUrl": "/join"
+  },
+  "inlineSignup": {
+    "title": "Don't miss any deal!",
+    "description": "Sign up to receive new coupons and promo codes.",
+    "buttonLabel": "Subscribe"
+  },
+  "rating": {
+    "enabled": true,
+    "average": 0,
+    "count": 0,
+    "rateNowLabel": "Rate Now"
+  },
+  "filters": [
+    "All",
+    "Coupons"
+  ],
+  "sortOptions": [
+    "Latest",
+    "Popular",
+    "Expiry"
+  ],
+  "storeId": "store_carpuride",
+  "slug": "carpuride",
+  "name": "CarPuride",
+  "domainLabel": "carpuride.com",
+  "logo": {
+    "src": "/assets/stores/carpuride.png",
+    "alt": "CarPuride logo"
+  },
+  "promoRibbon": "Earn up to 30% discount",
+  "pageTitle": "CarPuride Coupons and Promo Codes",
+  "pagePeriodLabel": "May - 2026",
+  "description": "Smart car electronics and accessories",
+  "offers": [
+    {
+      "offerId": "offer_001",
+      "type": "coupon",
+      "badge": "Discount Code",
+      "headline": "Get 30% Off Sitewide",
+      "summary": "Use this coupon to save 30%",
+      "engagementCount": 58,
+      "engagementLabel": "Times Loyal",
+      "couponCode": "SAVE30",
+      "ctaLabel": "Show Coupon",
+      "expiryDate": "2026-06-30",
+      "outboundUrl": "https://affiliate-link.com/carpuride",
+      "popularity": 58
+    },
+    {
+      "offerId": "offer_002",
+      "type": "deal",
+      "badge": "Special Offer",
+      "headline": "Limited Time Deal Up To $160 Off",
+      "summary": "Click to get the deal",
+      "engagementCount": 49,
+      "engagementLabel": "Times Loyal",
+      "couponCode": null,
+      "ctaLabel": "Get Deal",
+      "expiryDate": "2026-06-30",
+      "outboundUrl": "https://affiliate-link.com/carpuride-sale",
+      "popularity": 49
+    }
+  ]
+}

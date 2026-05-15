@@ -1,0 +1,73 @@
+{
+  "featuredStores": [],
+  "relatedStores": [],
+  "shareBlock": {
+    "title": "Share Now Stores",
+    "image": "/assets/placeholders/store-share.svg",
+    "description": "Discover curated deals and offers from this store.",
+    "ctaLabel": "Sign Up",
+    "ctaUrl": "/join"
+  },
+  "inlineSignup": {
+    "title": "Don't miss any deal!",
+    "description": "Sign up to receive new coupons and promo codes.",
+    "buttonLabel": "Subscribe"
+  },
+  "rating": {
+    "enabled": true,
+    "average": 0,
+    "count": 0,
+    "rateNowLabel": "Rate Now"
+  },
+  "filters": [
+    "All",
+    "Coupons"
+  ],
+  "sortOptions": [
+    "Latest",
+    "Popular",
+    "Expiry"
+  ],
+  "storeId": "store_sample-tech",
+  "slug": "sample-tech",
+  "name": "Sample Tech",
+  "domainLabel": "sample-tech.com",
+  "logo": {
+    "src": "/assets/placeholders/store.svg",
+    "alt": "Sample Tech logo"
+  },
+  "promoRibbon": "Save up to 25% on tech",
+  "pageTitle": "Sample Tech Coupons and Promo Codes",
+  "pagePeriodLabel": "May - 2026",
+  "description": "Curated tech deals and partner offers",
+  "offers": [
+    {
+      "offerId": "offer_st_001",
+      "type": "coupon",
+      "badge": "Discount Code",
+      "headline": "15% Off First Order",
+      "summary": "New shoppers save 15% with this code",
+      "engagementCount": 32,
+      "engagementLabel": "Times Loyal",
+      "couponCode": "TECH15",
+      "ctaLabel": "Show Coupon",
+      "expiryDate": "2026-07-01",
+      "outboundUrl": "https://affiliate-link.com/sample-tech",
+      "popularity": 32
+    },
+    {
+      "offerId": "offer_st_002",
+      "type": "deal",
+      "badge": "Special Offer",
+      "headline": "Bundle Deal Save $50",
+      "summary": "Selected bundles only",
+      "engagementCount": 21,
+      "engagementLabel": "Times Loyal",
+      "couponCode": null,
+      "ctaLabel": "Get Deal",
+      "expiryDate": "2026-06-15",
+      "outboundUrl": "https://affiliate-link.com/sample-tech-bundle",
+      "popularity": 21
+    }
+  ]
+}

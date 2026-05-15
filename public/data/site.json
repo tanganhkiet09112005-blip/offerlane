@@ -1,0 +1,68 @@
+{
+  "brand": {
+    "name": "OfferLane",
+    "tagline": "Curated deals, verified savings",
+    "legalLine": "OfferLane Media Group — Registered affiliate publisher"
+  },
+  "theme": {
+    "primary": "#0c4a4e",
+    "accent": "#e85d4c",
+    "background": "#f7f5f2",
+    "text": "#1c2434"
+  },
+  "header": {
+    "mainNav": [
+      { "label": "Home", "href": "/" },
+      { "label": "Products", "href": "/products" },
+      { "label": "Blogs", "href": "/blogs" }
+    ],
+    "shortcutNav": [
+      { "label": "Smart Home", "href": "/category/smart-home" },
+      { "label": "Auto Tech", "href": "/category/auto-tech" },
+      { "label": "Wellness", "href": "/category/wellness" },
+      { "label": "Outdoor", "href": "/category/outdoor" },
+      { "label": "Office", "href": "/category/office" }
+    ],
+    "searchLabel": "Search",
+    "aboutLink": { "label": "About", "href": "/about" },
+    "auth": {
+      "joinLabel": "Join us",
+      "signInLabel": "Sign in"
+    },
+    "mobileMenu": [
+      { "label": "Home", "href": "/" },
+      { "label": "About", "href": "/about" },
+      { "label": "Blogs", "href": "/blogs" },
+      { "label": "Smart Home", "href": "/category/smart-home" },
+      { "label": "Auto Tech", "href": "/category/auto-tech" },
+      { "label": "Wellness", "href": "/category/wellness" },
+      { "label": "Outdoor", "href": "/category/outdoor" },
+      { "label": "Office", "href": "/category/office" },
+      { "label": "View All", "href": "/categories" },
+      { "label": "Contact", "href": "/contact" }
+    ]
+  },
+  "footer": {
+    "brandBlurb": "OfferLane helps shoppers discover exclusive affiliate deals, coupon codes, and partner offers across trusted brands.",
+    "usefulLinks": [
+      { "label": "About", "href": "/about" },
+      { "label": "Terms", "href": "/terms" },
+      { "label": "Privacy", "href": "/privacy" },
+      { "label": "Contact", "href": "/contact" }
+    ],
+    "newsletter": {
+      "title": "Weekly deal digest",
+      "description": "Get fresh promo codes and partner highlights in your inbox.",
+      "buttonLabel": "Subscribe",
+      "placeholder": "you@email.com"
+    },
+    "affiliateDisclosure": "OfferLane may earn a commission when you click links or redeem offers on partner sites. Prices and availability are set by merchants.",
+    "copyright": "© 2026 OfferLane Media Group. All rights reserved."
+  },
+  "searchMockResults": [
+    { "title": "DriveCore Dash Cam Bundle", "href": "/store/drive-core", "type": "Store" },
+    { "title": "Smart Thermo Pro", "href": "/products/smart-thermo-pro", "type": "Product" },
+    { "title": "How to stack seasonal coupons", "href": "/blogs/stack-seasonal-coupons", "type": "Blog" },
+    { "title": "HomeMotion Lighting Deals", "href": "/store/home-motion", "type": "Store" }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "title": "All Products",
+  "pageSize": 16,
+  "pagination": {
+    "totalItems": 3,
+    "totalPages": 1,
+    "currentPage": 1
+  },
+  "items": [
+    {
+      "productId": "prod_001",
+      "slug": "smart-screen-pro",
+      "badge": "Exclusive",
+      "title": "Smart Screen Pro",
+      "image": {
+        "src": "/assets/products/smart-screen-pro.jpg",
+        "alt": "Smart Screen Pro product image"
+      },
+      "currentPrice": 79,
+      "compareAtPrice": 129,
+      "currency": "USD",
+      "vendor": "Sample Vendor",
+      "internalUrl": "/products/smart-screen-pro",
+      "outboundUrl": "https://affiliate-link.com/smart-screen-pro",
+      "page": 1,
+      "featured": true,
+      "category": "auto-tech"
+    },
+    {
+      "productId": "prod_002",
+      "slug": "dash-cam-lite",
+      "badge": "Exclusive",
+      "title": "Dash Cam Lite",
+      "image": {
+        "src": "/assets/placeholders/product.svg",
+        "alt": "Dash Cam Lite dash camera"
+      },
+      "currentPrice": 59,
+      "compareAtPrice": null,
+      "currency": "USD",
+      "vendor": "Auto Vision",
+      "internalUrl": "/products/dash-cam-lite",
+      "outboundUrl": "https://affiliate-link.com/dash-cam-lite",
+      "page": 1,
+      "featured": false,
+      "category": "auto-tech"
+    },
+    {
+      "productId": "prod_003",
+      "slug": "wireless-carplay",
+      "badge": "Exclusive",
+      "title": "Wireless CarPlay Adapter",
+      "image": {
+        "src": "/assets/products/wireless-carplay.jpg",
+        "alt": "Wireless CarPlay adapter"
+      },
+      "currentPrice": 89,
+      "compareAtPrice": 119,
+      "currency": "USD",
+      "vendor": "CarPuride",
+      "internalUrl": "/products/wireless-carplay",
+      "outboundUrl": "https://affiliate-link.com/wireless-carplay",
+      "page": 1,
+      "featured": true,
+      "category": "auto-tech"
+    }
+  ]
+}

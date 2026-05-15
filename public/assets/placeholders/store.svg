@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-labelledby="title">
+  <title id="title">Store placeholder</title>
+  <rect width="120" height="120" rx="18" fill="#eef1f6"/>
+  <path d="M28 48h64l-6-20H34l-6 20Z" fill="#0c4a4e"/>
+  <path d="M33 52h54v38H33V52Z" fill="#ffffff" stroke="#dde3ec" stroke-width="4"/>
+  <path d="M49 90V66h22v24" fill="#e85d4c"/>
+</svg>
