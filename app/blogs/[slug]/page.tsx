@@ -18,6 +18,8 @@ import { PageViewTracker } from "@/components/providers/PageViewTracker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import styles from "@/components/blogs/blogs.module.css";
 
+const BLOG_PLACEHOLDER_IMAGE = "/assets/placeholders/product.svg";
+
 export function generateStaticParams() {
   return getAllBlogSlugs().map((slug) => ({ slug }));
 }
@@ -56,6 +58,9 @@ export default async function BlogPostPage({
   const relatedStores = relatedStoreSlugs.length
     ? getStoresBySlugs(relatedStoreSlugs)
     : [];
+  const heroImage = post.heroImage?.src || BLOG_PLACEHOLDER_IMAGE;
+  const heroAlt = post.heroImage?.alt || `${post.title} cover image`;
+  const ctaHref = recommendedProducts[0]?.internalUrl ?? "/products";
 
   return (
     <main className={`container ${styles.article}`} data-page-type="blog-post">
@@ -72,7 +77,33 @@ export default async function BlogPostPage({
           description: post.excerpt,
           author: { "@type": "Organization", name: post.author ?? "OfferLane" },
           datePublished: post.date,
-          image: post.heroImage?.src,
+          image: heroImage,
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "/",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Blogs",
+              item: "/blogs",
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: post.title,
+              item: `/blogs/${post.slug}`,
+            },
+          ],
         }}
       />
       <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -82,31 +113,52 @@ export default async function BlogPostPage({
         <span className="breadcrumb__sep" />
         <span aria-current="page">{post.title}</span>
       </nav>
-      <span className={styles.meta}>
-        {post.category ?? "Guide"} - {post.author ?? "OfferLane Editorial"} - {post.date}
-      </span>
-      <h1 className="page-title">{post.title}</h1>
-      <p className={styles.articleLead}>{post.excerpt}</p>
 
-      {post.heroImage && (
+      <header className={styles.articleHeader}>
+        <div className={styles.articleIntro}>
+          <span className={styles.eyebrow}>{post.category ?? "Guide"}</span>
+          <h1 className="page-title page-title--plain">{post.title}</h1>
+          <p className={styles.articleLead}>{post.excerpt}</p>
+          <div className={styles.articleMetaLine}>
+            <span>{post.author ?? "OfferLane Editorial"}</span>
+            {post.date && <span aria-hidden="true">-</span>}
+            {post.date && <time dateTime={post.date}>{post.date}</time>}
+          </div>
+        </div>
         <div className={styles.hero}>
           <Image
-            src={post.heroImage.src}
-            alt={post.heroImage.alt}
+            src={heroImage}
+            alt={heroAlt}
             width={900}
             height={520}
             priority
             style={{ width: "100%", height: "auto" }}
           />
         </div>
-      )}
+      </header>
 
-      {data.sections.map((section) => (
-        <section key={section.heading} className={styles.section}>
-          <h2>{section.heading}</h2>
-          <p>{section.body}</p>
+      <article className={styles.articleBody} aria-label="Article body">
+        {data.sections.map((section) => (
+          <section key={section.heading} className={styles.section}>
+            <h2>{section.heading}</h2>
+            <p>{section.body}</p>
+          </section>
+        ))}
+      </article>
+
+      {post.ctaLabel && (
+        <section className={styles.ctaBlock} aria-labelledby="blog-cta">
+          <span className={styles.eyebrow}>Next lane</span>
+          <h2 id="blog-cta">Ready to compare the picks?</h2>
+          <p>
+            Use the related product and store sections below to keep researching
+            before you leave for a merchant site.
+          </p>
+          <Link href={ctaHref} className="btn btn--primary">
+            {post.ctaLabel}
+          </Link>
         </section>
-      ))}
+      )}
 
       {recommendedProducts.length > 0 && (
         <section className={styles.recent} aria-labelledby="blog-products">
@@ -164,23 +216,34 @@ export default async function BlogPostPage({
           </h2>
           <div className={styles.grid}>
             {recentPosts.map((recent) => (
-              <Link
-                key={recent.slug}
-                href={`/blogs/${recent.slug}`}
-                className={styles.card}
-              >
-                <span className={styles.meta}>
-                  {recent.category ?? "Guide"} - {recent.date}
-                </span>
-                <h3>{recent.title}</h3>
-                <p>{recent.excerpt}</p>
+              <Link key={recent.slug} href={`/blogs/${recent.slug}`} className={styles.card}>
+                <div className={styles.cardThumb}>
+                  <Image
+                    src={recent.heroImage?.src || BLOG_PLACEHOLDER_IMAGE}
+                    alt={recent.heroImage?.alt || `${recent.title} cover image`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                  />
+                </div>
+                <div className={styles.cardBody}>
+                  <span className={styles.cardCategory}>
+                    {recent.category ?? "Guide"}
+                  </span>
+                  <h3>{recent.title}</h3>
+                  <p>{recent.excerpt}</p>
+                  <span className={styles.meta}>
+                    {recent.author ?? "OfferLane Editorial"}
+                    {recent.date && <span aria-hidden="true">-</span>}
+                    {recent.date && <time dateTime={recent.date}>{recent.date}</time>}
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
         </section>
       )}
 
-      <p style={{ marginTop: "2rem" }}>
+      <p className={styles.backLink}>
         <Link href="/blogs" className="btn btn--outline">
           Back to blogs
         </Link>
