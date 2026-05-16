@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { trackEvent, trackOutbound } from "@/lib/analytics";
+import { trackEvent, trackOutbound, type TrackPayload } from "@/lib/analytics";
 import type { Product } from "@/lib/types";
 import styles from "./products.module.css";
 
@@ -23,10 +23,15 @@ export function ProductCard({
   product,
   position,
   listName = "all-products",
+  contextEvent,
 }: {
   product: Product;
   position: number;
   listName?: string;
+  contextEvent?: {
+    name: string;
+    payload?: TrackPayload;
+  };
 }) {
   const ref = useRef<HTMLElement>(null);
   const viewed = useRef(false);
@@ -60,6 +65,15 @@ export function ProductCard({
   }, [product.productId, position, listName]);
 
   const onInternalClick = () => {
+    if (contextEvent) {
+      trackEvent(contextEvent.name, {
+        product_id: product.productId,
+        product_slug: product.slug,
+        list_name: listName,
+        position,
+        ...contextEvent.payload,
+      });
+    }
     trackEvent("view_product", {
       product_id: product.productId,
       list_name: listName,
@@ -72,6 +86,20 @@ export function ProductCard({
     e.preventDefault();
     trackOutbound({
       events: [
+        ...(contextEvent
+          ? [
+              {
+                name: contextEvent.name,
+                payload: {
+                  product_id: product.productId,
+                  product_slug: product.slug,
+                  list_name: listName,
+                  position,
+                  ...contextEvent.payload,
+                },
+              },
+            ]
+          : []),
         {
           name: "view_product",
           payload: {

@@ -6,8 +6,12 @@ import {
   getAllBlogSlugs,
   getBlogPost,
   getBlogPostBySlug,
+  getFeaturedProducts,
   getRecentBlogPosts,
 } from "@/lib/data";
+import { ProductCard } from "@/components/products/ProductCard";
+import productStyles from "@/components/products/products.module.css";
+import { PageViewTracker } from "@/components/providers/PageViewTracker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import styles from "@/components/blogs/blogs.module.css";
 
@@ -40,9 +44,15 @@ export default async function BlogPostPage({
   if (!post || !data) notFound();
 
   const recentPosts = getRecentBlogPosts(slug, 3);
+  const recommendedProducts = getFeaturedProducts(3);
 
   return (
     <main className={`container ${styles.article}`} data-page-type="blog-post">
+      <PageViewTracker
+        pageType="blog-post"
+        pageSlug={post.slug}
+        extra={{ blog_title: post.title }}
+      />
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -86,6 +96,28 @@ export default async function BlogPostPage({
           <p>{section.body}</p>
         </section>
       ))}
+
+      {recommendedProducts.length > 0 && (
+        <section className={styles.recent} aria-labelledby="blog-products">
+          <h2 id="blog-products" className="section-title">
+            Product picks mentioned by OfferLane
+          </h2>
+          <div className={productStyles.grid}>
+            {recommendedProducts.map((product, index) => (
+              <ProductCard
+                key={product.productId}
+                product={product}
+                position={index + 1}
+                listName="blog-recommended-products"
+                contextEvent={{
+                  name: "click_blog_product",
+                  payload: { blog_slug: post.slug },
+                }}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       {recentPosts.length > 0 && (
         <section className={styles.recent} aria-labelledby="recent-blogs">

@@ -36,6 +36,14 @@ export function PageViewTracker({
         ...attribution,
       });
     }
+
+    if (pageType === "blog-post" && pageSlug) {
+      trackEvent("view_blog", {
+        blog_slug: pageSlug,
+        ...attribution,
+        ...extra,
+      });
+    }
   }, [pageType, pageSlug, extra]);
 
   return null;

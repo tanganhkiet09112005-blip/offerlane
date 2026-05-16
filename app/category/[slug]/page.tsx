@@ -8,6 +8,7 @@ import {
 } from "@/lib/data";
 import { ContentPageView } from "@/components/content/ContentPageView";
 import { ProductCard } from "@/components/products/ProductCard";
+import { PageViewTracker } from "@/components/providers/PageViewTracker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import productStyles from "@/components/products/products.module.css";
 
@@ -41,6 +42,14 @@ export default async function CategoryPage({
 
   return (
     <main className="container" data-page-type="category">
+      <PageViewTracker
+        pageType="category"
+        pageSlug={slug}
+        extra={{
+          visible_product_count: products.length,
+          visible_store_count: stores.length,
+        }}
+      />
       <JsonLd
         data={{
           "@context": "https://schema.org",

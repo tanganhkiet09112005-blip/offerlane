@@ -10,6 +10,7 @@ import {
 } from "@/lib/data";
 import { ProductCard } from "@/components/products/ProductCard";
 import { ProductOutboundLink } from "@/components/products/ProductOutboundLink";
+import { PageViewTracker } from "@/components/providers/PageViewTracker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import gridStyles from "@/components/products/products.module.css";
 import styles from "@/components/products/product-detail.module.css";
@@ -62,6 +63,11 @@ export default async function ProductDetailPage({
 
   return (
     <main className={`container ${styles.detail}`} data-page-type="product-detail">
+      <PageViewTracker
+        pageType="product-detail"
+        pageSlug={product.slug}
+        extra={{ product_id: product.productId }}
+      />
       <JsonLd
         data={{
           "@context": "https://schema.org",
