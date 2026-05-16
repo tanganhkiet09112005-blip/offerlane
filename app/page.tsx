@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   getBlogPosts,
   getFeaturedProducts,
+  getFeaturedStores,
   getSiteConfig,
 } from "@/lib/data";
+import { HomeNewsletterForm } from "@/components/home/HomeNewsletterForm";
 import { ProductCard } from "@/components/products/ProductCard";
 import productStyles from "@/components/products/products.module.css";
 import { PageViewTracker } from "@/components/providers/PageViewTracker";
@@ -12,20 +15,44 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import styles from "@/components/home/home.module.css";
 
 export const metadata: Metadata = {
-  title: "OfferLane | Deals, Reviews & Promo Codes",
+  title: "OfferLane | Deals, Coupon Codes & Smart Shopping Guides",
   description:
-    "OfferLane curates affiliate product picks, coupon pages, and deal guides for shoppers who compare before clicking out.",
+    "OfferLane curates affiliate product picks, verified coupon codes, and deal guides for shoppers who compare before clicking out.",
 };
+
+// Category emoji markers — visual shorthand without copying any brand
+const CATEGORY_ICONS: Record<string, string> = {
+  "auto-tech": "🚗",
+  "smart-home": "🏠",
+  wellness: "💪",
+  outdoor: "🏕️",
+  office: "💼",
+  gadgets: "📱",
+  deals: "🏷️",
+  lifestyle: "✨",
+};
+
+function getCategoryIcon(href: string): string {
+  const slug = href.split("/").pop() ?? "";
+  return CATEGORY_ICONS[slug] ?? "🔖";
+}
 
 export default function HomePage() {
   const site = getSiteConfig();
-  const products = getFeaturedProducts(site.home?.featuredProductLimit ?? 8);
+  const products = getFeaturedProducts(site.home?.featuredProductLimit ?? 6);
   const posts = getBlogPosts();
+  const stores = getFeaturedStores(6);
+
   const headlineSlugs = new Set(site.home?.headlinePostSlugs ?? []);
-  const headlines = posts.filter((post) => headlineSlugs.has(post.slug));
+  const headlines = posts.filter((p) => headlineSlugs.has(p.slug));
+  // Featured articles: up to 4, skip those already in headline strip
+  const articlePosts = posts.filter((p) => !headlineSlugs.has(p.slug)).slice(0, 4);
+  const displayArticles = articlePosts.length > 0 ? articlePosts : posts.slice(0, 4);
+
+  const categoryPills = site.home?.storeCategoryPills ?? site.header.shortcutNav;
 
   return (
-    <main className={`container ${styles.home}`} data-page-type="home">
+    <main className={styles.home} data-page-type="home">
       <PageViewTracker pageType="home" />
       <JsonLd
         data={{
@@ -34,39 +61,84 @@ export default function HomePage() {
           name: site.brand.name,
           description: site.brand.tagline,
           url: "/",
+          potentialAction: {
+            "@type": "SearchAction",
+            target: "/?q={search_term_string}",
+            "query-input": "required name=search_term_string",
+          },
         }}
       />
 
-      <section className={styles.hero}>
-        <h1 className="page-title">{site.brand.name}</h1>
-        <p className={styles.heroLead}>
-          Curated affiliate product picks, coupon pages, and editorial buying
-          notes for shoppers who want the deal context before the merchant tab.
-        </p>
-        <ul className={styles.pillRow} aria-label="Featured categories">
-          {(site.home?.storeCategoryPills ?? site.header.shortcutNav).map((link) => (
-            <li key={link.href}>
-              <Link href={link.href} className={styles.pill}>
-                {link.label}
+      {/* ── 1. HERO ──────────────────────────────────────────── */}
+      <section className={styles.hero} aria-label="Welcome to OfferLane">
+        <div className={`container ${styles.heroInner}`}>
+          <div className={styles.heroContent}>
+            <p className={styles.heroBadge}>🏷️ Curated Affiliate Deals</p>
+            <h1 className={styles.heroTitle}>{site.brand.name}</h1>
+            <p className={styles.heroLead}>
+              Compare verified coupon codes, affiliate product picks, and partner
+              deal guides — all in one lane. We do the homework so you click with
+              confidence.
+            </p>
+
+            {/* Category pill navigation */}
+            {categoryPills.length > 0 && (
+              <ul className={styles.pillRow} aria-label="Browse by category">
+                {categoryPills.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className={styles.heroPill}>
+                      <span aria-hidden="true">{getCategoryIcon(link.href)}</span>
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <div className={styles.heroActions}>
+              <Link href="/products" className="btn btn--primary btn--lg">
+                Browse Deals
               </Link>
-            </li>
-          ))}
-        </ul>
-        <p className={styles.actionRow}>
-          <Link href="/products" className="btn btn--primary">
-            Browse products
-          </Link>
-          <Link href="/store/carpuride" className="btn btn--outline">
-            Open store deals
-          </Link>
-        </p>
+              <Link href="/blogs" className={styles.heroSecondaryLink}>
+                Read savings guides →
+              </Link>
+            </div>
+          </div>
+
+          {/* Hero stats bar */}
+          <div className={styles.heroStats} aria-label="Site highlights">
+            <div className={styles.heroStat}>
+              <span className={styles.heroStatNum}>{products.length}+</span>
+              <span className={styles.heroStatLabel}>Curated picks</span>
+            </div>
+            <div className={styles.heroStatDivider} aria-hidden="true" />
+            <div className={styles.heroStat}>
+              <span className={styles.heroStatNum}>{stores.length}+</span>
+              <span className={styles.heroStatLabel}>Partner stores</span>
+            </div>
+            <div className={styles.heroStatDivider} aria-hidden="true" />
+            <div className={styles.heroStat}>
+              <span className={styles.heroStatNum}>{posts.length}+</span>
+              <span className={styles.heroStatLabel}>Deal guides</span>
+            </div>
+          </div>
+        </div>
       </section>
 
+      {/* ── 2. FEATURED PRODUCTS ────────────────────────────── */}
       {products.length > 0 && (
-        <section className={styles.section} aria-labelledby="home-products">
-          <h2 id="home-products" className="section-title">
-            Deal picks moving this week
-          </h2>
+        <section
+          className={`container ${styles.section}`}
+          aria-labelledby="home-products"
+        >
+          <div className={styles.sectionHeader}>
+            <h2 id="home-products" className="section-title">
+              Deal picks moving this week
+            </h2>
+            <Link href="/products" className={styles.sectionLink}>
+              View all →
+            </Link>
+          </div>
           <div className={productStyles.grid}>
             {products.map((product, index) => (
               <ProductCard
@@ -80,8 +152,12 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* ── 3. HEADLINE STRIP ───────────────────────────────── */}
       {headlines.length > 0 && (
-        <section className={styles.section} aria-labelledby="home-headlines">
+        <section
+          className={`container ${styles.section}`}
+          aria-labelledby="home-headlines"
+        >
           <h2 id="home-headlines" className="section-title">
             Fresh notes from the lane
           </h2>
@@ -92,62 +168,141 @@ export default function HomePage() {
                 href={`/blogs/${post.slug}`}
                 className={styles.headlineItem}
               >
-                <span>{post.category ?? "OfferLane Editorial"}</span>
-                {post.title}
+                <span className={styles.headlineCategory}>
+                  {post.category ?? "OfferLane Editorial"}
+                </span>
+                <span className={styles.headlineTitle}>{post.title}</span>
               </Link>
             ))}
           </div>
         </section>
       )}
 
-      {posts.length > 0 && (
-        <section className={styles.section} aria-labelledby="home-articles">
-          <h2 id="home-articles" className="section-title">
-            Buying guides and savings notes
-          </h2>
+      {/* ── 4. FEATURED ARTICLES (blog cards with thumbnail) ── */}
+      {displayArticles.length > 0 && (
+        <section
+          className={`container ${styles.section}`}
+          aria-labelledby="home-articles"
+        >
+          <div className={styles.sectionHeader}>
+            <h2 id="home-articles" className="section-title">
+              Buying guides &amp; savings notes
+            </h2>
+            <Link href="/blogs" className={styles.sectionLink}>
+              All guides →
+            </Link>
+          </div>
           <div className={styles.articleGrid}>
-            {posts.slice(0, 4).map((post) => (
+            {displayArticles.map((post) => (
               <Link
                 key={post.slug}
                 href={`/blogs/${post.slug}`}
                 className={styles.articleCard}
               >
-                <span className={styles.meta}>
-                  {post.category ?? "Guide"} - {post.date}
-                </span>
-                <h3 className={styles.cardTitle}>{post.title}</h3>
-                <p className={styles.cardText}>{post.excerpt}</p>
+                {/* Thumbnail */}
+                <div className={styles.articleThumb}>
+                  {post.heroImage?.src ? (
+                    <Image
+                      src={post.heroImage.src}
+                      alt={post.heroImage.alt ?? post.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      style={{ objectFit: "cover" }}
+                    />
+                  ) : (
+                    <div className={styles.articleThumbFallback} aria-hidden="true">
+                      <span>{post.category ?? "Guide"}</span>
+                    </div>
+                  )}
+                </div>
+                {/* Body */}
+                <div className={styles.articleBody}>
+                  {post.category && (
+                    <span className={styles.articleCategory}>{post.category}</span>
+                  )}
+                  <h3 className={styles.articleTitle}>{post.title}</h3>
+                  <p className={styles.articleExcerpt}>{post.excerpt}</p>
+                  <div className={styles.articleMeta}>
+                    <span>{post.author ?? "OfferLane Editorial"}</span>
+                    {post.date && <span aria-hidden="true">·</span>}
+                    {post.date && <time dateTime={post.date}>{post.date}</time>}
+                  </div>
+                </div>
               </Link>
             ))}
           </div>
         </section>
       )}
 
-      <section className={styles.section} aria-labelledby="home-partners">
-        <h2 id="home-partners" className="section-title">
-          Partner lanes to watch
-        </h2>
-        <div className={styles.linkGrid}>
-          {(site.home?.partnerLinks ?? []).map((link) => (
-            <Link key={link.href} href={link.href} className={styles.linkCard}>
-              <span className={styles.meta}>Partner spotlight</span>
-              <h3 className={styles.cardTitle}>{link.label}</h3>
-              <p className={styles.cardText}>
-                Open the current coupon page, compare merchant terms, and click
-                through only when the offer fits.
-              </p>
+      {/* ── 5. FEATURED STORES ──────────────────────────────── */}
+      {stores.length > 0 && (
+        <section
+          className={`container ${styles.section}`}
+          aria-labelledby="home-stores"
+        >
+          <div className={styles.sectionHeader}>
+            <h2 id="home-stores" className="section-title">
+              Partner stores &amp; current deals
+            </h2>
+            <Link href="/stores" className={styles.sectionLink}>
+              All stores →
             </Link>
-          ))}
-          {(site.home?.socialLinks ?? []).map((link) => (
-            <Link key={link.href} href={link.href} className={styles.linkCard}>
-              <span className={styles.meta}>Community signal</span>
-              <h3 className={styles.cardTitle}>{link.label}</h3>
-              <p className={styles.cardText}>
-                Review editorial notes and category picks before choosing a
-                partner checkout path.
+          </div>
+          <div className={styles.storeGrid}>
+            {stores.map((store) => (
+              <Link
+                key={store.slug}
+                href={`/store/${store.slug}`}
+                className={styles.storeCard}
+              >
+                <div className={styles.storeCardLogo}>
+                  <Image
+                    src={
+                      store.logo.src &&
+                      store.logo.src !== "/assets/placeholders/store.svg"
+                        ? store.logo.src
+                        : "/assets/placeholders/store.svg"
+                    }
+                    alt={store.logo.alt ?? store.name}
+                    width={56}
+                    height={56}
+                    style={{ objectFit: "contain" }}
+                  />
+                </div>
+                <div className={styles.storeCardBody}>
+                  {store.promoRibbon && (
+                    <span className={styles.storeRibbon}>{store.promoRibbon}</span>
+                  )}
+                  <p className={styles.storeCardName}>{store.name}</p>
+                  <p className={styles.storeCardDesc}>{store.description}</p>
+                </div>
+                <span className={styles.storeCardCta} aria-label={`See ${store.name} deals`}>
+                  View deals →
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── 6. NEWSLETTER CTA ───────────────────────────────── */}
+      <section className={styles.newsletterSection} aria-labelledby="home-newsletter">
+        <div className="container">
+          <div className={styles.newsletterInner}>
+            <div className={styles.newsletterText}>
+              <h2 id="home-newsletter" className={styles.newsletterTitle}>
+                Get the weekly deal digest
+              </h2>
+              <p className={styles.newsletterLead}>
+                Fresh coupon codes, partner highlights, and buying guide picks —
+                delivered before the deals expire.
               </p>
-            </Link>
-          ))}
+            </div>
+            <HomeNewsletterForm />
+            <p className={styles.newsletterDisclaimer}>
+              No spam. Unsubscribe at any time.
+            </p>
+          </div>
         </div>
       </section>
     </main>

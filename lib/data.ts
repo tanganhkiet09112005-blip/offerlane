@@ -279,3 +279,8 @@ export function getCategoryTitle(slug: string): string {
   const category = pages.categories?.categoryList?.find((cat) => cat.slug === slug);
   return category?.title ?? titleFromSlug(slug);
 }
+
+/** Return up to `limit` stores for home page featured section. */
+export function getFeaturedStores(limit = 6): StorePageData[] {
+  return getAllStores().slice(0, limit);
+}
