@@ -1,11 +1,16 @@
+/* ────────────────────────────────────────────────────────────
+   OfferLane — Product Detail Styles (Phase 1 upgrade)
+   ──────────────────────────────────────────────────────────── */
+
 .detail {
-  padding: 2rem 0 3rem;
+  padding: var(--space-4) 0 var(--space-12);
 }
 
+/* ─── Hero section ───────────────────────────────────────── */
 .hero {
   display: grid;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
 }
 
 @media (min-width: 820px) {
@@ -15,76 +20,129 @@
   }
 }
 
+/* Image container */
 .imageWrap {
   border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   background: var(--color-surface);
-  padding: 1rem;
+  padding: var(--space-5);
+  box-shadow: var(--shadow-card);
 }
 
+/* Promo ribbon / badge */
 .ribbon {
   display: inline-flex;
-  width: fit-content;
+  align-items: center;
+  gap: var(--space-1);
   color: var(--color-accent);
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  font-size: var(--text-xs);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: 0.07em;
   text-transform: uppercase;
+  margin-bottom: var(--space-2);
+  padding: 0.25rem 0.6rem;
+  border: 1.5px solid currentColor;
+  border-radius: var(--radius-xs);
+  background: var(--color-accent-light);
+  width: fit-content;
 }
 
+/* Short description */
 .summary {
-  color: var(--color-muted);
-  font-size: 1rem;
+  color: var(--color-text-soft);
+  font-size: var(--text-md);
+  line-height: 1.65;
   max-width: 42rem;
+  margin-bottom: var(--space-4);
 }
 
+/* ─── Price ──────────────────────────────────────────────── */
 .price {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.65rem;
-  margin: 1rem 0;
+  gap: 0.6rem;
+  margin: var(--space-4) 0 var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
 }
 
 .current {
-  font-size: 1.7rem;
-  font-weight: 800;
+  font-size: var(--text-4xl);
+  font-weight: var(--fw-extrabold);
+  color: var(--color-text);
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
 .compare {
   color: var(--color-muted);
+  font-weight: var(--fw-medium);
   text-decoration: line-through;
+  font-size: var(--text-xl);
 }
 
+/* ─── Vendor ─────────────────────────────────────────────── */
 .vendor {
+  font-size: var(--text-sm);
   color: var(--color-muted);
+  margin-bottom: var(--space-4);
+  font-weight: var(--fw-medium);
 }
 
+.vendor a {
+  color: var(--color-primary);
+  font-weight: var(--fw-semibold);
+}
+
+.vendor a:hover {
+  text-decoration: underline;
+}
+
+/* ─── Disclosure note ────────────────────────────────────── */
 .disclosure {
   max-width: 46rem;
-  padding: 0.8rem 1rem;
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-surface);
+  border-left: 3px solid var(--color-border-strong);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--color-surface-2);
   color: var(--color-muted);
-  font-size: 0.88rem;
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  margin-bottom: var(--space-6);
 }
 
+/* ─── Detail sections ────────────────────────────────────── */
 .section {
-  margin: 2rem 0;
-  max-width: 760px;
+  margin: var(--space-8) 0;
+  max-width: var(--prose-w);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.section:last-of-type {
+  border-bottom: none;
 }
 
 .section h2 {
-  font-size: 1.18rem;
-  margin: 0 0 0.45rem;
+  font-size: var(--text-lg);
+  font-weight: var(--fw-bold);
+  letter-spacing: -0.015em;
+  margin: 0 0 var(--space-3);
+  color: var(--color-text);
 }
 
 .section p {
   margin: 0;
-  line-height: 1.7;
+  line-height: 1.75;
+  color: var(--color-text-soft);
+  font-size: var(--text-md);
 }
 
+/* ─── Related / Popular product sections ─────────────────── */
 .related {
-  margin: 2.5rem 0 0;
+  margin: var(--space-10) 0 0;
 }

@@ -150,6 +150,7 @@ export interface ContentSection {
 }
 
 export interface BlogPostPreview {
+  postId?: string;
   slug: string;
   title: string;
   excerpt: string;
@@ -160,6 +161,9 @@ export interface BlogPostPreview {
   heroImage?: ProductImage;
   sections?: ContentSection[];
   relatedPostSlugs?: string[];
+  relatedProductSlugs?: string[];
+  relatedStoreSlugs?: string[];
+  ctaLabel?: string;
   seo?: SeoConfig;
 }
 

@@ -12,6 +12,7 @@ const ROOT = path.join(__dirname, "..");
 const IMPORT_DIR = path.join(ROOT, "public", "import");
 const DATA_DIR = path.join(ROOT, "public", "data");
 const STORES_OUT_DIR = path.join(DATA_DIR, "stores");
+const PAGES_PATH = path.join(DATA_DIR, "pages.json");
 
 const PAGE_SIZE = 16;
 const PLACEHOLDER_LOGO =
@@ -19,6 +20,7 @@ const PLACEHOLDER_LOGO =
 const PLACEHOLDER_PRODUCT =
   "/assets/placeholders/product.svg";
 const PLACEHOLDER_SHARE = "/assets/placeholders/store-share.svg";
+const PLACEHOLDER_BLOG = PLACEHOLDER_SHARE;
 
 const warnings = [];
 const errors = [];
@@ -66,13 +68,16 @@ function parseList(v) {
     .filter(Boolean);
 }
 
-function parseJsonArray(v, fallback = []) {
+function parseJsonArray(v, fallback = [], warningContext = "") {
   const s = trim(v);
   if (!s) return fallback;
   try {
     const parsed = JSON.parse(s);
-    return Array.isArray(parsed) ? parsed : fallback;
+    if (Array.isArray(parsed)) return parsed;
+    if (warningContext) warn(`${warningContext}: expected a JSON array`);
+    return fallback;
   } catch {
+    if (warningContext) warn(`${warningContext}: invalid JSON, using []`);
     return fallback;
   }
 }
@@ -175,6 +180,26 @@ function readCsv(filename) {
   }
   const text = fs.readFileSync(filePath, "utf8");
   return parseCsv(text);
+}
+
+function readOptionalCsv(filename) {
+  const filePath = path.join(IMPORT_DIR, filename);
+  if (!fs.existsSync(filePath)) return null;
+  const text = fs.readFileSync(filePath, "utf8");
+  return parseCsv(text);
+}
+
+function readPagesJson() {
+  if (!fs.existsSync(PAGES_PATH)) {
+    fail("Missing required file: public/data/pages.json");
+    return null;
+  }
+  try {
+    return JSON.parse(fs.readFileSync(PAGES_PATH, "utf8"));
+  } catch {
+    fail("public/data/pages.json is not valid JSON");
+    return null;
+  }
 }
 
 function storeDefaults(slug, name) {
@@ -457,6 +482,121 @@ function parseProducts(rows) {
   return items;
 }
 
+function normalizeSections(sections, sourceLabel) {
+  const clean = [];
+  sections.forEach((section, index) => {
+    const heading = trim(section?.heading);
+    const body = trim(section?.body);
+    if (!heading || !body) {
+      warn(`${sourceLabel}: section ${index + 1} missing heading/body, skipped`);
+      return;
+    }
+    clean.push({ heading, body });
+  });
+  return clean;
+}
+
+function parseBlogs(rows, pages) {
+  const existingPosts = new Map(
+    (pages.blogs?.posts ?? []).map((post) => [post.slug, post])
+  );
+  const seenPostIds = new Set();
+  const seenSlugs = new Set();
+  const posts = [];
+
+  if (!rows.length) {
+    warn("blogs.csv has no rows; blog index will have no posts");
+  }
+
+  rows.forEach((row, i) => {
+    const line = i + 2;
+    const postId = trim(row.postId);
+    const slug = trim(row.slug);
+    const title = trim(row.title);
+
+    if (!postId) {
+      fail(`blogs.csv line ${line}: postId is required`);
+      return;
+    }
+    if (!slug) {
+      fail(`blogs.csv line ${line}: slug is required`);
+      return;
+    }
+    if (!title) {
+      fail(`blogs.csv line ${line}: title is required`);
+      return;
+    }
+    if (seenPostIds.has(postId)) {
+      fail(`blogs.csv line ${line}: duplicate postId "${postId}"`);
+      return;
+    }
+    if (seenSlugs.has(slug)) {
+      fail(`blogs.csv line ${line}: duplicate slug "${slug}"`);
+      return;
+    }
+    seenPostIds.add(postId);
+    seenSlugs.add(slug);
+
+    const existing = existingPosts.get(slug) ?? {};
+    const date = trim(row.date);
+    if (date && !isValidDate(date)) {
+      warn(`blogs.csv line ${line}: invalid date "${date}" for "${slug}"`);
+    }
+
+    const heroImageSrc = trim(row.heroImage) || PLACEHOLDER_BLOG;
+    if (!trim(row.heroImage)) {
+      warn(`blogs.csv line ${line}: heroImage empty for "${slug}", using placeholder`);
+    }
+
+    const rawSections = parseJsonArray(
+      row.sectionsJson,
+      [],
+      `blogs.csv line ${line}: sectionsJson for "${slug}"`
+    );
+    const sections = normalizeSections(
+      rawSections,
+      `blogs.csv line ${line}: sectionsJson for "${slug}"`
+    );
+    const relatedPostSlugs = parseList(row.relatedPostSlugs);
+    const relatedProductSlugs = parseList(row.relatedProductSlugs);
+    const relatedStoreSlugs = parseList(row.relatedStoreSlugs);
+
+    const post = {
+      postId,
+      slug,
+      title,
+      excerpt: trim(row.excerpt) || title,
+      date: date && isValidDate(date) ? date : "",
+      heroImage: {
+        src: heroImageSrc,
+        alt: trim(row.heroImageAlt) || existing.heroImage?.alt || `${title} hero image`,
+      },
+      sections,
+    };
+
+    if (trim(row.category)) post.category = trim(row.category);
+    if (trim(row.author)) post.author = trim(row.author);
+
+    const views = parseOptionalNum(row.views);
+    if (views !== null) post.views = views;
+    else if (typeof existing.views === "number") post.views = existing.views;
+
+    if (relatedPostSlugs.length) {
+      post.relatedPostSlugs = relatedPostSlugs;
+    } else if (Array.isArray(existing.relatedPostSlugs)) {
+      post.relatedPostSlugs = existing.relatedPostSlugs;
+    }
+    if (relatedProductSlugs.length) post.relatedProductSlugs = relatedProductSlugs;
+    if (relatedStoreSlugs.length) post.relatedStoreSlugs = relatedStoreSlugs;
+    if (trim(row.ctaLabel)) post.ctaLabel = trim(row.ctaLabel);
+
+    addSeo(post, row, `/blogs/${slug}`);
+    posts.push(post);
+  });
+
+  return posts;
+}
+
 function writeProductsJson(items) {
   const totalItems = items.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
@@ -477,6 +617,11 @@ function writeProductsJson(items) {
   return outPath;
 }
 
+function writePagesJson(pages) {
+  fs.writeFileSync(PAGES_PATH, `${JSON.stringify(pages, null, 2)}\n`, "utf8");
+  return PAGES_PATH;
+}
+
 function writeStoreJson(store) {
   fs.mkdirSync(STORES_OUT_DIR, { recursive: true });
   const outPath = path.join(STORES_OUT_DIR, `${store.slug}.json`);
@@ -490,6 +635,7 @@ function ensureImportSamples() {
     "stores.sample.csv",
     "offers.sample.csv",
     "products.sample.csv",
+    "blogs.sample.csv",
   ];
   for (const name of samples) {
     const samplePath = path.join(IMPORT_DIR, name);
@@ -507,6 +653,7 @@ function main() {
   const storeRows = readCsv("stores.csv");
   const offerRows = readCsv("offers.csv");
   const productRows = readCsv("products.csv");
+  const blogRows = readOptionalCsv("blogs.csv");
 
   if (!storeRows || !offerRows || !productRows) {
     console.error("\nImport aborted due to missing CSV files.");
@@ -527,6 +674,8 @@ function main() {
   stores = parseOffers(offerRows, stores);
 
   const products = parseProducts(productRows);
+  const pages = blogRows ? readPagesJson() : null;
+  const blogPosts = blogRows && pages ? parseBlogs(blogRows, pages) : null;
   if (errors.length) {
     console.error("\nImport aborted.");
     process.exit(1);
@@ -541,8 +690,28 @@ function main() {
   }
   console.log(`✓ Wrote ${storePaths.length} store file(s) in public/data/stores/`);
 
+  if (blogRows && pages && blogPosts) {
+    pages.blogs = {
+      title: pages.blogs?.title ?? "Blogs",
+      lead:
+        pages.blogs?.lead ??
+        "Editorial notes on deal timing, merchant terms, affiliate products, and smarter outbound shopping.",
+      sections: pages.blogs?.sections ?? [],
+      ...pages.blogs,
+      posts: blogPosts,
+    };
+    const pagesPath = writePagesJson(pages);
+    console.log(`✓ Updated ${pagesPath} (${blogPosts.length} blog posts)`);
+  }
+
   console.log("\nRoutes available after build:");
   console.log("  /products");
+  if (blogRows) {
+    console.log("  /blogs");
+    for (const post of blogPosts ?? []) {
+      console.log(`  /blogs/${post.slug}`);
+    }
+  }
   for (const slug of stores.keys()) {
     console.log(`  /store/${slug}`);
   }

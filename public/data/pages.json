@@ -77,16 +77,14 @@
     "sections": [],
     "posts": [
       {
+        "postId": "post_001",
         "slug": "stack-seasonal-coupons",
         "title": "How to stack seasonal coupons",
         "excerpt": "Learn when partner terms allow combining percentage codes with free-shipping offers.",
         "date": "2026-05-01",
-        "category": "Savings Guides",
-        "author": "OfferLane Editorial",
-        "views": 482,
         "heroImage": {
           "src": "/assets/placeholders/store-share.svg",
-          "alt": "OfferLane savings guide"
+          "alt": "How to stack seasonal coupons hero image"
         },
         "sections": [
           {
@@ -102,7 +100,20 @@
             "body": "Open the offer, copy the code, review the expiration date, and confirm the final checkout total before buying. If a code fails, switch to a current deal or direct merchant promotion."
           }
         ],
-        "relatedPostSlugs": ["smart-home-deals-guide"],
+        "category": "Savings Guides",
+        "author": "OfferLane Editorial",
+        "views": 482,
+        "relatedPostSlugs": [
+          "smart-home-deals-guide"
+        ],
+        "relatedProductSlugs": [
+          "smart-screen-pro",
+          "wireless-carplay"
+        ],
+        "relatedStoreSlugs": [
+          "carpuride"
+        ],
+        "ctaLabel": "Compare related picks",
         "seo": {
           "title": "How to Stack Seasonal Coupons | OfferLane",
           "description": "A practical OfferLane guide to checking coupon stacking rules, shipping terms, and final merchant prices.",
@@ -110,16 +121,14 @@
         }
       },
       {
+        "postId": "post_002",
         "slug": "smart-home-deals-guide",
         "title": "Smart home deals: what to check before you buy",
         "excerpt": "Compatibility, warranty, and outbound merchant reputation matter as much as price.",
         "date": "2026-04-18",
-        "category": "Buying Notes",
-        "author": "OfferLane Editorial",
-        "views": 356,
         "heroImage": {
           "src": "/assets/placeholders/product.svg",
-          "alt": "Smart home product checklist"
+          "alt": "Smart home deals: what to check before you buy hero image"
         },
         "sections": [
           {
@@ -135,7 +144,20 @@
             "body": "Check repeated complaints around setup, app reliability, and replacement parts. A strong coupon is more useful when the product still fits your daily routine after delivery."
           }
         ],
-        "relatedPostSlugs": ["stack-seasonal-coupons"],
+        "category": "Buying Notes",
+        "author": "OfferLane Editorial",
+        "views": 356,
+        "relatedPostSlugs": [
+          "stack-seasonal-coupons"
+        ],
+        "relatedProductSlugs": [
+          "smart-screen-pro",
+          "dash-cam-lite"
+        ],
+        "relatedStoreSlugs": [
+          "sample-tech"
+        ],
+        "ctaLabel": "Review product picks",
         "seo": {
           "title": "Smart Home Deals Checklist | OfferLane",
           "description": "OfferLane's checklist for reviewing smart-home compatibility, warranty terms, and merchant conditions before clicking out.",

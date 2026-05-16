@@ -1,84 +1,254 @@
+/* ────────────────────────────────────────────────────────────
+   OfferLane — Blog Index & Detail Styles (Phase 1 upgrade)
+   ──────────────────────────────────────────────────────────── */
+
+/* ─── Blog index page ────────────────────────────────────── */
 .index {
-  padding: 2rem 0 3rem;
+  padding: var(--space-4) 0 var(--space-12);
 }
 
 .lead {
   color: var(--color-muted);
-  max-width: 46rem;
-  margin: 0 0 2rem;
+  max-width: 48rem;
+  margin: 0 0 var(--space-8);
+  font-size: var(--text-md);
+  line-height: 1.65;
 }
 
+/* ─── Blog card grid ─────────────────────────────────────── */
 .grid {
   display: grid;
-  gap: 1rem;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
 }
 
-@media (min-width: 760px) {
+@media (min-width: 640px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ─── Blog card ──────────────────────────────────────────── */
 .card {
-  display: block;
-  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   background: var(--color-surface);
   color: var(--color-text);
   text-decoration: none;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
 }
 
 .card:hover {
-  border-color: rgba(12, 74, 78, 0.3);
+  border-color: rgba(15, 92, 98, 0.28);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
   text-decoration: none;
 }
 
-.meta {
-  display: block;
-  color: var(--color-muted);
-  font-size: 0.78rem;
-  margin-bottom: 0.4rem;
+/* Card thumbnail area */
+.cardThumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--color-surface-2);
+  overflow: hidden;
 }
 
+.cardThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.card:hover .cardThumb img {
+  transform: scale(1.03);
+}
+
+/* Fallback placeholder for missing thumbnail */
+.cardThumbFallback {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-surface-2) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Card body */
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: var(--space-4) var(--space-4) var(--space-5);
+}
+
+/* Category chip */
+.cardCategory {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
+}
+
+/* Blog title */
 .card h2,
 .card h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.05rem;
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-md);
+  font-weight: var(--fw-bold);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
 }
 
-.card p,
-.articleLead {
+/* Excerpt */
+.card p {
   color: var(--color-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
   margin: 0;
+  flex: 1;
 }
 
+/* Meta line (author / date) */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-muted-light);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-medium);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.meta::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+  flex-shrink: 0;
+}
+
+/* ─── Blog article page ──────────────────────────────────── */
 .article {
-  padding: 2rem 0 3rem;
-  max-width: 820px;
+  padding: var(--space-4) 0 var(--space-12);
+  max-width: calc(var(--prose-w) + var(--space-8));
 }
 
+/* Article lead text */
+.articleLead {
+  color: var(--color-text-soft);
+  font-size: var(--text-lg);
+  line-height: 1.65;
+  margin: 0 0 var(--space-6);
+  max-width: var(--prose-w);
+}
+
+/* Article hero image */
 .hero {
-  margin: 1.25rem 0 2rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  margin: var(--space-5) 0 var(--space-8);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--color-surface);
+  background: var(--color-surface-2);
+  box-shadow: var(--shadow-md);
 }
 
+/* Article section */
 .section {
-  margin: 2rem 0;
+  margin: var(--space-8) 0;
+  max-width: var(--prose-w);
 }
 
 .section h2 {
-  margin: 0 0 0.5rem;
-  font-size: 1.18rem;
+  font-size: var(--text-xl);
+  font-weight: var(--fw-bold);
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-3);
+  color: var(--color-text);
 }
 
 .section p {
-  line-height: 1.7;
+  line-height: 1.75;
+  color: var(--color-text-soft);
+  font-size: var(--text-md);
+  margin: 0;
 }
 
+/* ─── Related / Recent posts area ────────────────────────── */
 .recent {
-  margin-top: 2.5rem;
+  margin-top: var(--space-10);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-border);
+}
+
+/* ─── Related store cards (in blog detail) ────────────────── */
+.storeCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-xs);
+  text-decoration: none;
+  color: var(--color-text);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.storeCard:hover {
+  border-color: rgba(15, 92, 98, 0.28);
+  box-shadow: var(--shadow-card);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.storeCard img {
+  flex: 0 0 auto;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-2);
+  object-fit: contain;
+  border: 1px solid var(--color-border);
+}
+
+.storeName {
+  display: block;
+  color: var(--color-text);
+  font-weight: var(--fw-bold);
+  margin-bottom: 0.2rem;
+  font-size: var(--text-base);
+}
+
+.storeDescription {
+  display: block;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
 }

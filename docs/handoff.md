@@ -3,6 +3,7 @@
 Quick reference for taking over the project after Options A–D (UI, CMS import, tracking, documentation).
 
 **Full developer guide:** [README.md](../README.md)  
+**Client update guide:** [client-update-guide.md](./client-update-guide.md)  
 **CMS CSV reference:** [cms-import.md](./cms-import.md)
 
 ---
@@ -40,13 +41,14 @@ npm run start                # optional local prod test
 
 ---
 
-## Your three data files
+## Your four data files
 
 | File | You change |
 |------|------------|
 | `public/import/stores.csv` | Store name, logo, description, ribbon |
 | `public/import/offers.csv` | Coupons & deals per store |
 | `public/import/products.csv` | Catalog for `/products` |
+| `public/import/blogs.csv` | Blog posts for `/blogs` and `/blogs/[slug]` |
 
 Templates: `public/import/*.sample.csv`
 
@@ -139,6 +141,7 @@ Update this section with your agency or internal owner:
 ```text
 README.md           → Full technical + ops guide (18 sections)
 docs/handoff.md     → This file — executive handoff
+docs/client-update-guide.md → Vietnamese client guide for updating products, stores, offers, blogs, assets, pixels, and deploys
 docs/cms-import.md  → CSV columns, validation, workflows
 .env.example        → Pixel environment variables
 ```

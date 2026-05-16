@@ -7,8 +7,11 @@ import {
   getBlogPost,
   getBlogPostBySlug,
   getFeaturedProducts,
+  getProductsBySlugs,
   getRecentBlogPosts,
+  getStoresBySlugs,
 } from "@/lib/data";
+import { BlogRelatedStoreCard } from "@/components/blogs/BlogRelatedStoreCard";
 import { ProductCard } from "@/components/products/ProductCard";
 import productStyles from "@/components/products/products.module.css";
 import { PageViewTracker } from "@/components/providers/PageViewTracker";
@@ -44,7 +47,15 @@ export default async function BlogPostPage({
   if (!post || !data) notFound();
 
   const recentPosts = getRecentBlogPosts(slug, 3);
-  const recommendedProducts = getFeaturedProducts(3);
+  const relatedProductSlugs = post.relatedProductSlugs ?? [];
+  const relatedStoreSlugs = post.relatedStoreSlugs ?? [];
+  const hasRelatedProductSlugs = relatedProductSlugs.length > 0;
+  const recommendedProducts = hasRelatedProductSlugs
+    ? getProductsBySlugs(relatedProductSlugs)
+    : getFeaturedProducts(3);
+  const relatedStores = relatedStoreSlugs.length
+    ? getStoresBySlugs(relatedStoreSlugs)
+    : [];
 
   return (
     <main className={`container ${styles.article}`} data-page-type="blog-post">
@@ -108,11 +119,38 @@ export default async function BlogPostPage({
                 key={product.productId}
                 product={product}
                 position={index + 1}
-                listName="blog-recommended-products"
+                listName={
+                  hasRelatedProductSlugs
+                    ? "blog-related-products"
+                    : "blog-recommended-products"
+                }
                 contextEvent={{
                   name: "click_blog_product",
-                  payload: { blog_slug: post.slug },
+                  payload: {
+                    blog_slug: post.slug,
+                    source: hasRelatedProductSlugs
+                      ? "related_product_slugs"
+                      : "featured_fallback",
+                  },
                 }}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {relatedStores.length > 0 && (
+        <section className={styles.recent} aria-labelledby="blog-stores">
+          <h2 id="blog-stores" className="section-title">
+            Related stores and deals
+          </h2>
+          <div className={styles.grid}>
+            {relatedStores.map((store, index) => (
+              <BlogRelatedStoreCard
+                key={store.storeId}
+                store={store}
+                blogSlug={post.slug}
+                position={index + 1}
               />
             ))}
           </div>
