@@ -14,7 +14,10 @@
     "mainNav": [
       { "label": "Home", "href": "/" },
       { "label": "Products", "href": "/products" },
-      { "label": "Blogs", "href": "/blogs" }
+      { "label": "Blogs", "href": "/blogs" },
+      { "label": "Categories", "href": "/categories" },
+      { "label": "Stores", "href": "/stores" },
+      { "label": "About", "href": "/about" }
     ],
     "shortcutNav": [
       { "label": "Smart Home", "href": "/category/smart-home" },
@@ -31,8 +34,11 @@
     },
     "mobileMenu": [
       { "label": "Home", "href": "/" },
-      { "label": "About", "href": "/about" },
+      { "label": "Products", "href": "/products" },
       { "label": "Blogs", "href": "/blogs" },
+      { "label": "Categories", "href": "/categories" },
+      { "label": "Stores", "href": "/stores" },
+      { "label": "About", "href": "/about" },
       { "label": "Smart Home", "href": "/category/smart-home" },
       { "label": "Auto Tech", "href": "/category/auto-tech" },
       { "label": "Wellness", "href": "/category/wellness" },
@@ -69,6 +75,15 @@
       { "label": "Terms", "href": "/terms" },
       { "label": "Privacy", "href": "/privacy" },
       { "label": "Contact", "href": "/contact" }
+    ],
+    "browseLinks": [
+      { "label": "All products", "href": "/products" },
+      { "label": "Browse categories", "href": "/categories" },
+      { "label": "All stores", "href": "/stores" }
+    ],
+    "socialLinks": [
+      { "label": "Deal guides (blog)", "href": "/blogs" },
+      { "label": "Smart home picks", "href": "/category/smart-home" }
     ],
     "newsletter": {
       "title": "Weekly deal digest",

@@ -53,6 +53,10 @@ export interface SiteHeader {
 export interface SiteFooter {
   brandBlurb: string;
   usefulLinks: NavLink[];
+  /** Optional — product/category/store shortcuts */
+  browseLinks?: NavLink[];
+  /** Optional — social or brand outposts */
+  socialLinks?: NavLink[];
   newsletter: {
     title: string;
     description: string;
