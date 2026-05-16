@@ -84,13 +84,25 @@ export function AuthModal() {
           <Link href="/forgot-password">Forgot Password</Link>
         </p>
         <div className={styles.socialBtns}>
-          <button type="button" className={styles.socialBtn}>
+          <button
+            type="button"
+            className={styles.socialBtn}
+            aria-label="Continue with Facebook (placeholder)"
+          >
             Continue with Facebook
           </button>
-          <button type="button" className={styles.socialBtn}>
+          <button
+            type="button"
+            className={styles.socialBtn}
+            aria-label="Continue with Google (placeholder)"
+          >
             Continue with Google
           </button>
-          <button type="button" className={styles.socialBtn}>
+          <button
+            type="button"
+            className={styles.socialBtn}
+            aria-label="Continue with Apple (placeholder)"
+          >
             Continue with Apple
           </button>
         </div>

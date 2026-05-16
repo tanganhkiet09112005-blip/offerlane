@@ -125,6 +125,7 @@ export function GlobalHeader() {
               type="button"
               className={styles.authLink}
               onClick={() => openAuth("join")}
+              aria-label={`${site.header.auth.joinLabel} (opens account panel)`}
             >
               {site.header.auth.joinLabel}
             </button>
@@ -132,6 +133,7 @@ export function GlobalHeader() {
               type="button"
               className={styles.authLink}
               onClick={() => openAuth("signin")}
+              aria-label={`${site.header.auth.signInLabel} (opens account panel)`}
             >
               {site.header.auth.signInLabel}
             </button>
@@ -141,7 +143,7 @@ export function GlobalHeader() {
               onClick={toggleMobileMenu}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-drawer"
-              aria-label="Open navigation menu"
+              aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
               data-nav="mobile-drawer"
             >
               <span className={styles.menuIcon} aria-hidden />

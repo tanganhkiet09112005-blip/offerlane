@@ -185,5 +185,15 @@ Edit the `outboundUrl` column in `offers.csv` or `products.csv`, then run `npm r
 ## Technical notes
 
 - Store routes are discovered from `public/data/stores/*.json` at build time (`getAllStoreSlugs()`).
+- Category routes come from `pages.json` → `categories.categoryList` (`getAllCategorySlugs()`).
 - Import errors on missing required fields stop the script; warnings do not.
 - Debug import output in the terminal after `npm run import:cms`.
+
+## SEO after import
+
+1. Set `NEXT_PUBLIC_SITE_URL` in production env.
+2. Run `npm run import:cms && npm run build`.
+3. Verify `/sitemap.xml` lists your product, blog, store, and category URLs.
+4. Optional CSV columns `seoTitle` / `seoDescription` (products, stores, blogs) feed page metadata when present.
+
+`public/data/site.json` is **not** overwritten by import (nav, footer, `browseLinks`, `socialLinks` stay manual).

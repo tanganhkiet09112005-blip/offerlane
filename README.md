@@ -18,10 +18,16 @@ Affiliate / deals / coupon website built with **Next.js 15**. Product catalog an
 
 | Template | Route | Purpose |
 |----------|-------|---------|
-| Product catalog | `/products` | Grid of affiliate products, pagination, **Shop Now** outbound |
-| Store coupons/deals | `/store/[slug]` | Store summary, filters, offer list, coupon/deal CTAs |
+| Home | `/` | Featured products, categories, stores, blogs, newsletter |
+| Product catalog | `/products` | Responsive product grid, pagination, **Shop Now** outbound |
+| Product detail | `/products/[slug]` | Product hero, pricing, detail sections, similar/popular picks |
+| Store coupons/deals | `/store/[slug]` | Store header, filters/sort, coupon reveal + deal CTAs |
+| Category hub | `/category/[slug]` | Category intro, matching stores + products, related chips |
+| Blog index | `/blogs` | Editorial cards linking to posts |
+| Blog post | `/blogs/[slug]` | Article, related products/stores |
+| Content pages | `/about`, `/terms`, `/privacy`, … | JSON-driven from `pages.json` |
 
-Supporting content uses shared content pages from `public/data/pages.json`; blog posts are imported from `public/import/blogs.csv` into `pages.json`.
+Blog posts import from `public/import/blogs.csv` into `pages.json`. Products, stores, and offers import from CSV into `public/data/`.
 
 ---
 
@@ -29,22 +35,18 @@ Supporting content uses shared content pages from `public/data/pages.json`; blog
 
 | Route | Description |
 |-------|-------------|
-| `/` | Home — links to products and featured store |
-| `/products` | All products (from `public/data/products.json`) |
-| `/products/[slug]` | Product detail placeholder (internal canonical link) |
-| `/store/carpuride` | Store coupons — CarPuride (from CMS import) |
-| `/store/sample-tech` | Store coupons — sample second store |
-| `/store/[slug]` | Any store with `public/data/stores/[slug].json` after import + build |
-| `/stores` | Store directory (content page) |
-| `/about` | About |
-| `/terms` | Terms & Conditions |
-| `/privacy` | Privacy Policy |
-| `/contact` | Contact |
+| `/` | Home |
+| `/products` | Product catalog grid (`products.json`) |
+| `/products/[slug]` | Product detail |
+| `/store/[slug]` | Store coupons/deals (`public/data/stores/[slug].json`) |
+| `/stores` | Store directory |
+| `/categories` | Category directory |
+| `/category/[slug]` | Category hub (e.g. `/category/auto-tech`) |
 | `/blogs` | Blog index |
-| `/blogs/[slug]` | Blog post detail |
-| `/category/[slug]` | Category placeholder (smart-home, auto-tech, …) |
-| `/join` | Join placeholder |
-| `/forgot-password` | Forgot password placeholder |
+| `/blogs/[slug]` | Blog post |
+| `/about`, `/terms`, `/privacy`, `/contact` | Content pages |
+| `/join`, `/forgot-password` | Auth UI placeholders (not in sitemap) |
+| `/sitemap.xml`, `/robots.txt` | SEO discovery (absolute URLs via `NEXT_PUBLIC_SITE_URL`) |
 
 ### API routes
 
@@ -99,7 +101,8 @@ components/
   providers/                 # ShellProvider, PageViewTracker
 
 lib/
-  data.ts                    # Load site, products, stores (fs for stores)
+  data.ts                    # Load site, products, stores, categories (fs for stores)
+  seo.ts                     # Site URL, metadata helpers, breadcrumb JSON-LD
   types.ts                   # TypeScript interfaces
   analytics.ts               # trackEvent, trackOutbound, deliverToApi
   attribution.ts             # UTM / click id sessionStorage
@@ -258,7 +261,8 @@ All offers live in `public/import/offers.csv` and are grouped by `storeSlug`.
 |-------|----------|-----------|
 | Product images | `public/assets/products/` | `imageSrc` in `products.csv` |
 | Store logos | `public/assets/stores/` | `logo` in `stores.csv` |
-| Share block (default) | `public/assets/placeholders/` | Set in generated JSON or extend import later |
+| Blog hero images | `public/assets/blogs/` (optional) | `heroImage` in `blogs.csv` |
+| Placeholders | `public/assets/placeholders/` | Used when CSV image/logo fields are empty |
 
 **Rules:**
 
@@ -282,10 +286,13 @@ All offers live in `public/import/offers.csv` and are grouped by `storeSlug`.
 Create `.env.local` (see `.env.example`):
 
 ```env
+NEXT_PUBLIC_SITE_URL=https://www.your-domain.com
 NEXT_PUBLIC_GA4_ID=
 NEXT_PUBLIC_META_PIXEL_ID=
 NEXT_PUBLIC_TIKTOK_PIXEL_ID=
 ```
+
+`NEXT_PUBLIC_SITE_URL` powers canonical URLs, Open Graph, `sitemap.xml`, `robots.txt`, and JSON-LD. If unset, the app falls back to `https://example.com` (safe for local build; set the real domain before production ads).
 
 | Behavior | Detail |
 |----------|--------|
@@ -306,16 +313,22 @@ UTM and ad click IDs (`utm_*`, `fbclid`, `ttclid`, `gclid`) are stored in **sess
 | `page_view` | Page load (includes UTM from session) |
 | `view_store` | Store page load |
 | `view_product` | Product card in viewport or click / Shop Now |
-| `filter_offers` | All / Coupons tab |
+| `view_blog` | Blog post page load |
+| `filter_offers` | All / Coupons / Deals tabs |
 | `sort_offers` | Latest / Popular / Expiry |
 | `expand_offer` | Show More on offer |
 | `get_coupon` | Show Coupon clicked |
 | `copy_coupon` | Copy coupon code |
 | `click_deal` | Get Deal clicked |
+| `click_blog_product` | Product card CTA from blog post |
+| `click_blog_store` | Related store card from blog post |
 | `outbound_click` | Shop Now, Get Deal, Go to store |
 | `paginate_products` | Products pagination |
 | `newsletter_signup` | Footer or store inline form |
 | `auth_modal_open` | Join us / Sign in |
+| `search_open` | Search overlay opened |
+| `search_submit` | Search form submitted |
+| `search_result_click` | Result chosen in search overlay |
 | `add_to_cart` | **Reserved — not used in v1** |
 
 Outbound flow: events fire first, then `navigator.sendBeacon` (fallback `fetch` keepalive) to `/api/track`, then redirect—see `trackOutbound()` in `lib/analytics.ts`.
@@ -374,37 +387,64 @@ Before spending on ads:
 
 ---
 
-## 16. Deployment guide (Vercel)
+## 16. SEO & discovery
+
+| Asset | Location | Notes |
+|-------|----------|-------|
+| Page metadata | `generateMetadata` + `lib/seo.ts` | title, description, canonical, Open Graph, Twitter card |
+| `robots.txt` | `app/robots.ts` | Allows `/`, disallows `/api/`, points to sitemap |
+| `sitemap.xml` | `app/sitemap.ts` | Absolute URLs; includes home, products, blogs, stores, categories, legal pages |
+| JSON-LD | Per-route `<JsonLd />` | Organization/WebSite (home), CollectionPage/ItemList, Product, Article, BreadcrumbList |
+
+**Sitemap includes:** `/`, `/products`, all `/products/[slug]`, `/blogs`, all `/blogs/[slug]`, all `/store/[slug]`, all `/category/[slug]`, `/about`, `/terms`, `/privacy`, `/categories`, `/stores`, `/contact`.
+
+**Sitemap excludes:** `/join`, `/forgot-password` (auth placeholders).
+
+No fake `aggregateRating` or review counts in structured data.
+
+---
+
+## 17. Deployment guide (Vercel)
 
 1. **Push** repository to GitHub/GitLab/Bitbucket.
 2. **Import** project in [Vercel](https://vercel.com).
 3. **Framework preset:** Next.js.
-4. **Build command:** `npm run build` (default).
+4. **Build command (recommended):**
+   ```bash
+   npm run import:cms && npm run build
+   ```
+   Ensures CSV changes are reflected in `public/data/` on every deploy. Alternatively: commit regenerated JSON after local import and use `npm run build`.
 5. **Output:** Next.js default (no static export).
 6. **Environment variables** (Production + Preview as needed):
 
    | Name | Example |
    |------|---------|
+   | `NEXT_PUBLIC_SITE_URL` | `https://www.offerlane.com` |
    | `NEXT_PUBLIC_GA4_ID` | `G-XXXXXXXX` |
    | `NEXT_PUBLIC_META_PIXEL_ID` | `1234567890` |
    | `NEXT_PUBLIC_TIKTOK_PIXEL_ID` | `CXXXXXXXX` |
 
-7. **Deploy.** Vercel runs `npm install` + `npm run build`.
+7. **Deploy.** Vercel runs `npm install` + your build command.
 
 ### Post-deploy smoke test
 
+- [ ] `https://your-domain.com/`
 - [ ] `https://your-domain.com/products`
+- [ ] `https://your-domain.com/products/smart-screen-pro`
+- [ ] `https://your-domain.com/blogs` and one blog slug
+- [ ] `https://your-domain.com/category/auto-tech`
 - [ ] `https://your-domain.com/store/carpuride`
+- [ ] `https://your-domain.com/sitemap.xml` and `/robots.txt`
 - [ ] UTM test URL loads
 - [ ] `POST /api/track` returns `{ "success": true }`
 - [ ] Outbound click opens partner in new tab
 - [ ] Footer disclosure visible
 
-**Note:** Regenerate data on your machine (`npm run import:cms`), commit updated `public/data/*.json`, then redeploy—or run import in CI before build if you add that pipeline later.
+**Note:** Set `NEXT_PUBLIC_SITE_URL` to your live domain before launch so canonicals and sitemap URLs are correct.
 
 ---
 
-## 17. Scope notes
+## 18. Scope notes
 
 - **CSV/CMS import** only updates data for **existing** sections (product grid, store offers, etc.).
 - **New layouts**, sections (FAQ, cart, hero video), or page types require a **developer task**.
@@ -414,7 +454,7 @@ Before spending on ads:
 
 ---
 
-## 18. Common issues
+## 19. Common issues
 
 | Problem | Solution |
 |---------|----------|
