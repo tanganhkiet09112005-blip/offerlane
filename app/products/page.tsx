@@ -69,12 +69,13 @@ export default async function ProductsPage({
         checkout pages. Prices and availability are controlled by merchants.
       </p>
 
-      <div className={styles.grid}>
+      <div className={`${styles.grid} ${styles.gridCatalog}`}>
         {pageItems.map((product, i) => (
           <ProductCard
             key={product.productId}
             product={product}
             position={start + i}
+            layout="grid"
           />
         ))}
       </div>

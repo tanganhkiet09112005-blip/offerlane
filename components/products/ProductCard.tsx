@@ -24,10 +24,12 @@ export function ProductCard({
   position,
   listName = "all-products",
   contextEvent,
+  layout = "list",
 }: {
   product: Product;
   position: number;
   listName?: string;
+  layout?: "list" | "grid";
   contextEvent?: {
     name: string;
     payload?: TrackPayload;
@@ -125,10 +127,15 @@ export function ProductCard({
   const priceFmt = (n: number) =>
     n.toFixed(Number.isInteger(n) ? 0 : 2);
 
+  const imageSizes =
+    layout === "grid"
+      ? "(max-width: 479px) 92vw, (max-width: 1023px) 46vw, 32vw"
+      : "(max-width: 640px) 130px, 200px";
+
   return (
     <article
       ref={ref}
-      className={styles.card}
+      className={`${styles.card} ${layout === "grid" ? styles.cardGrid : ""}`}
       data-product-id={product.productId}
       data-currency={product.currency}
       data-page={product.page}
@@ -151,7 +158,7 @@ export function ProductCard({
             src={product.image.src}
             alt={product.image.alt}
             fill
-            sizes="(max-width: 640px) 130px, 200px"
+            sizes={imageSizes}
           />
         </Link>
       </div>
@@ -184,6 +191,7 @@ export function ProductCard({
         className={`btn btn--primary btn--cta ${styles.cta} js-shop-now`}
         onClick={onShopNow}
         data-event="outbound_click"
+        target="_blank"
         rel="nofollow sponsored noopener"
       >
         Shop Now
