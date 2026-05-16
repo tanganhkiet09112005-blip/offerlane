@@ -3,15 +3,17 @@ import { Suspense } from "react";
 import { AnalyticsScripts } from "@/components/analytics/AnalyticsScripts";
 import { TrackingBootstrap } from "@/components/analytics/TrackingBootstrap";
 import { getSiteConfig } from "@/lib/data";
+import { getSiteUrl, SITE_NAME } from "@/lib/seo";
 import { SiteShell } from "@/components/layout/SiteShell";
 import "./globals.css";
 
 const site = getSiteConfig();
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: `${site.brand.name} - Deals & Affiliate Offers`,
-    template: `%s | ${site.brand.name}`,
+    template: `%s | ${SITE_NAME}`,
   },
   description: site.brand.tagline,
 };

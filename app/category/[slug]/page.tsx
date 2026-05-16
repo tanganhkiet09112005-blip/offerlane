@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -10,6 +11,11 @@ import {
 import { ProductCard } from "@/components/products/ProductCard";
 import { PageViewTracker } from "@/components/providers/PageViewTracker";
 import { JsonLd } from "@/components/seo/JsonLd";
+import {
+  absoluteUrl,
+  breadcrumbJsonLd,
+  buildPageMetadata,
+} from "@/lib/seo";
 import { StoreMiniCard } from "@/components/store/StoreMiniCard";
 import productStyles from "@/components/products/products.module.css";
 import styles from "../category.module.css";
@@ -25,10 +31,15 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const page = getCategoryPage(slug);
-  return {
-    title: page?.seo?.title ?? page?.title ?? "Category",
-    description: page?.seo?.description ?? page?.lead,
-  };
+  if (!page) return { title: "Category" };
+  return buildPageMetadata({
+    title: page.seo?.title ?? `${page.title} Deals, Products & Stores`,
+    description:
+      page.seo?.description ??
+      page.lead ??
+      `Browse ${page.title} deals, products, and partner stores on OfferLane.`,
+    pathname: page.seo?.canonical ?? `/category/${slug}`,
+  });
 }
 
 export default async function CategoryPage({
@@ -68,8 +79,15 @@ export default async function CategoryPage({
           "@type": "CollectionPage",
           name: data.title,
           description: data.lead,
-          url: `/category/${slug}`,
+          url: absoluteUrl(`/category/${slug}`),
         }}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Categories", path: "/categories" },
+          { name: data.title, path: `/category/${slug}` },
+        ])}
       />
 
       <nav className="breadcrumb" aria-label="Breadcrumb">

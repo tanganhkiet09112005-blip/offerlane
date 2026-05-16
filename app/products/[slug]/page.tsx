@@ -12,6 +12,12 @@ import { ProductCard } from "@/components/products/ProductCard";
 import { ProductOutboundLink } from "@/components/products/ProductOutboundLink";
 import { PageViewTracker } from "@/components/providers/PageViewTracker";
 import { JsonLd } from "@/components/seo/JsonLd";
+import {
+  absoluteImageUrl,
+  absoluteUrl,
+  breadcrumbJsonLd,
+  buildPageMetadata,
+} from "@/lib/seo";
 import gridStyles from "@/components/products/products.module.css";
 import styles from "@/components/products/product-detail.module.css";
 
@@ -27,13 +33,15 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = getProductBySlug(slug);
   if (!product) return { title: "Product" };
-  return {
+  return buildPageMetadata({
     title: product.seo?.title ?? `${product.title} Deal Review`,
     description:
       product.seo?.description ??
       product.shortDescription ??
       `Compare ${product.title} pricing and partner terms on OfferLane.`,
-  };
+    pathname: product.seo?.canonical ?? `/products/${product.slug}`,
+    ogImage: product.image.src,
+  });
 }
 
 export default async function ProductDetailPage({
@@ -73,9 +81,10 @@ export default async function ProductDetailPage({
           "@context": "https://schema.org",
           "@type": "Product",
           name: product.title,
-          image: product.image.src,
-          brand: product.vendor,
+          image: absoluteImageUrl(product.image.src),
+          brand: { "@type": "Brand", name: product.vendor },
           description: product.shortDescription ?? product.title,
+          url: absoluteUrl(`/products/${product.slug}`),
           offers: {
             "@type": "Offer",
             price: product.currentPrice,
@@ -84,6 +93,13 @@ export default async function ProductDetailPage({
             availability: "https://schema.org/InStock",
           },
         }}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "All Products", path: "/products" },
+          { name: product.title, path: `/products/${product.slug}` },
+        ])}
       />
 
       <nav className="breadcrumb" aria-label="Breadcrumb">

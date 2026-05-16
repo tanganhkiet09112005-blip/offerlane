@@ -5,13 +5,15 @@ import { PageViewTracker } from "@/components/providers/PageViewTracker";
 import { ProductCard } from "@/components/products/ProductCard";
 import { ProductPagination } from "@/components/products/ProductPagination";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { absoluteUrl, buildPageMetadata } from "@/lib/seo";
 import styles from "@/components/products/products.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Affiliate Products & Deal Picks",
   description:
     "Browse OfferLane affiliate product picks with current prices, merchant links, and category-focused deal notes.",
-};
+  pathname: "/products",
+});
 
 function readPage(value?: string | string[]): number {
   const raw = Array.isArray(value) ? value[0] : value;
@@ -43,14 +45,16 @@ export default async function ProductsPage({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: data.title,
-          url: "/products",
+          description:
+            "Browse OfferLane affiliate product picks with current prices, merchant links, and category-focused deal notes.",
+          url: absoluteUrl("/products"),
           mainEntity: {
             "@type": "ItemList",
             numberOfItems: totalItems,
             itemListElement: pageItems.map((product, index) => ({
               "@type": "ListItem",
               position: start + index,
-              url: product.internalUrl,
+              url: absoluteUrl(product.internalUrl),
               name: product.title,
             })),
           },

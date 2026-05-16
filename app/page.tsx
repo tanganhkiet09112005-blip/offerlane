@@ -12,13 +12,15 @@ import { ProductCard } from "@/components/products/ProductCard";
 import productStyles from "@/components/products/products.module.css";
 import { PageViewTracker } from "@/components/providers/PageViewTracker";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { absoluteUrl, buildPageMetadata } from "@/lib/seo";
 import styles from "@/components/home/home.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "OfferLane | Deals, Coupon Codes & Smart Shopping Guides",
   description:
     "OfferLane curates affiliate product picks, verified coupon codes, and deal guides for shoppers who compare before clicking out.",
-};
+  pathname: "/",
+});
 
 // Category emoji markers — visual shorthand without copying any brand
 const CATEGORY_ICONS: Record<string, string> = {
@@ -57,13 +59,30 @@ export default function HomePage() {
       <JsonLd
         data={{
           "@context": "https://schema.org",
+          "@type": "Organization",
+          name: site.brand.name,
+          url: absoluteUrl("/"),
+          description: site.brand.tagline,
+          logo: absoluteUrl("/assets/placeholders/store.svg"),
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
           "@type": "WebSite",
           name: site.brand.name,
           description: site.brand.tagline,
-          url: "/",
+          url: absoluteUrl("/"),
+          publisher: {
+            "@type": "Organization",
+            name: site.brand.name,
+          },
           potentialAction: {
             "@type": "SearchAction",
-            target: "/?q={search_term_string}",
+            target: {
+              "@type": "EntryPoint",
+              urlTemplate: `${absoluteUrl("/")}?q={search_term_string}`,
+            },
             "query-input": "required name=search_term_string",
           },
         }}

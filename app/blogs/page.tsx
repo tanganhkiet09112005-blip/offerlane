@@ -4,13 +4,15 @@ import Link from "next/link";
 import { getBlogPosts } from "@/lib/data";
 import { PageViewTracker } from "@/components/providers/PageViewTracker";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { absoluteUrl, buildPageMetadata } from "@/lib/seo";
 import styles from "@/components/blogs/blogs.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "OfferLane Blogs & Savings Guides",
   description:
     "Read OfferLane buying notes, savings guides, and affiliate deal explainers.",
-};
+  pathname: "/blogs",
+});
 
 const BLOG_PLACEHOLDER_IMAGE = "/assets/placeholders/product.svg";
 
@@ -25,13 +27,19 @@ export default function BlogsPage() {
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "OfferLane Blogs",
-          url: "/blogs",
-          hasPart: posts.map((post, index) => ({
-            "@type": "BlogPosting",
-            position: index + 1,
-            headline: post.title,
-            url: `/blogs/${post.slug}`,
-          })),
+          description:
+            "Read OfferLane buying notes, savings guides, and affiliate deal explainers.",
+          url: absoluteUrl("/blogs"),
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: posts.length,
+            itemListElement: posts.map((post, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              url: absoluteUrl(`/blogs/${post.slug}`),
+              name: post.title,
+            })),
+          },
         }}
       />
       <nav className="breadcrumb" aria-label="Breadcrumb">

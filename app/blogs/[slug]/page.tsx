@@ -16,6 +16,12 @@ import { ProductCard } from "@/components/products/ProductCard";
 import productStyles from "@/components/products/products.module.css";
 import { PageViewTracker } from "@/components/providers/PageViewTracker";
 import { JsonLd } from "@/components/seo/JsonLd";
+import {
+  absoluteImageUrl,
+  absoluteUrl,
+  breadcrumbJsonLd,
+  buildPageMetadata,
+} from "@/lib/seo";
 import styles from "@/components/blogs/blogs.module.css";
 
 const BLOG_PLACEHOLDER_IMAGE = "/assets/placeholders/product.svg";
@@ -32,10 +38,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = getBlogPostBySlug(slug);
   if (!post) return { title: "Blog" };
-  return {
+  return buildPageMetadata({
     title: post.seo?.title ?? post.title,
     description: post.seo?.description ?? post.excerpt,
-  };
+    pathname: post.seo?.canonical ?? `/blogs/${post.slug}`,
+    ogImage: post.heroImage?.src,
+    ogType: "article",
+  });
 }
 
 export default async function BlogPostPage({
@@ -77,34 +86,20 @@ export default async function BlogPostPage({
           description: post.excerpt,
           author: { "@type": "Organization", name: post.author ?? "OfferLane" },
           datePublished: post.date,
-          image: heroImage,
+          image: absoluteImageUrl(heroImage),
+          mainEntityOfPage: absoluteUrl(`/blogs/${post.slug}`),
+          publisher: {
+            "@type": "Organization",
+            name: "OfferLane",
+          },
         }}
       />
       <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            {
-              "@type": "ListItem",
-              position: 1,
-              name: "Home",
-              item: "/",
-            },
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: "Blogs",
-              item: "/blogs",
-            },
-            {
-              "@type": "ListItem",
-              position: 3,
-              name: post.title,
-              item: `/blogs/${post.slug}`,
-            },
-          ],
-        }}
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Blogs", path: "/blogs" },
+          { name: post.title, path: `/blogs/${post.slug}` },
+        ])}
       />
       <nav className="breadcrumb" aria-label="Breadcrumb">
         <Link href="/">Home</Link>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   CONTENT_PAGE_SLUGS,
@@ -5,6 +6,7 @@ import {
   type ContentPageSlug,
 } from "@/lib/data";
 import { ContentPageView } from "@/components/content/ContentPageView";
+import { buildPageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return CONTENT_PAGE_SLUGS.map((pageSlug) => ({ pageSlug }));
@@ -17,7 +19,15 @@ export async function generateMetadata({
 }) {
   const { pageSlug } = await params;
   const page = getContentPage(pageSlug);
-  return { title: page?.title ?? "Page" };
+  if (!page) return { title: "Page" };
+  return buildPageMetadata({
+    title: page.seo?.title ?? page.title,
+    description:
+      page.seo?.description ??
+      page.lead ??
+      `${page.title} — OfferLane affiliate publisher policies and information.`,
+    pathname: `/${pageSlug}`,
+  });
 }
 
 function isContentSlug(slug: string): slug is ContentPageSlug {
