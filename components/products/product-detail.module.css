@@ -1,0 +1,90 @@
+.detail {
+  padding: 2rem 0 3rem;
+}
+
+.hero {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 820px) {
+  .hero {
+    grid-template-columns: minmax(260px, 380px) 1fr;
+    align-items: start;
+  }
+}
+
+.imageWrap {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  padding: 1rem;
+}
+
+.ribbon {
+  display: inline-flex;
+  width: fit-content;
+  color: var(--color-accent);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.summary {
+  color: var(--color-muted);
+  font-size: 1rem;
+  max-width: 42rem;
+}
+
+.price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.current {
+  font-size: 1.7rem;
+  font-weight: 800;
+}
+
+.compare {
+  color: var(--color-muted);
+  text-decoration: line-through;
+}
+
+.vendor {
+  color: var(--color-muted);
+}
+
+.disclosure {
+  max-width: 46rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.88rem;
+}
+
+.section {
+  margin: 2rem 0;
+  max-width: 760px;
+}
+
+.section h2 {
+  font-size: 1.18rem;
+  margin: 0 0 0.45rem;
+}
+
+.section p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.related {
+  margin: 2.5rem 0 0;
+}

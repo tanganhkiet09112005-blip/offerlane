@@ -57,6 +57,48 @@ function parseOptionalNum(v) {
   return Number.isFinite(n) ? n : null;
 }
 
+function parseList(v) {
+  const s = trim(v);
+  if (!s) return [];
+  return s
+    .split(/[;|]/)
+    .map((item) => trim(item))
+    .filter(Boolean);
+}
+
+function parseJsonArray(v, fallback = []) {
+  const s = trim(v);
+  if (!s) return fallback;
+  try {
+    const parsed = JSON.parse(s);
+    return Array.isArray(parsed) ? parsed : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function addSeo(target, row, fallbackCanonical) {
+  const seo = {
+    title: trim(row.seoTitle),
+    description: trim(row.seoDescription),
+    canonical: trim(row.canonical) || fallbackCanonical,
+    ogImage: trim(row.ogImage),
+  };
+  const clean = Object.fromEntries(
+    Object.entries(seo).filter(([, value]) => Boolean(value))
+  );
+  if (Object.keys(clean).length) target.seo = clean;
+}
+
+function inferStoreCategories(slug, name, description) {
+  const haystack = `${slug} ${name} ${description}`.toLowerCase();
+  if (/(car|auto|dash|drive|carplay)/.test(haystack)) return ["auto-tech"];
+  if (/(desk|office|work)/.test(haystack)) return ["office"];
+  if (/(wellness|sleep|health|recovery)/.test(haystack)) return ["wellness"];
+  if (/(outdoor|trail|gps|camp)/.test(haystack)) return ["outdoor"];
+  return ["smart-home"];
+}
+
 function currentPeriodLabel() {
   const d = new Date();
   const month = d.toLocaleString("en-US", { month: "short" });
@@ -140,15 +182,15 @@ function storeDefaults(slug, name) {
     featuredStores: [],
     relatedStores: [],
     shareBlock: {
-      title: "Share Now Stores",
+      title: "Share this deal lane",
       image: PLACEHOLDER_SHARE,
-      description: "Discover curated deals and offers from this store.",
-      ctaLabel: "Sign Up",
+      description: "Save this store and revisit fresh partner offers when they refresh.",
+      ctaLabel: "Join OfferLane",
       ctaUrl: "/join",
     },
     inlineSignup: {
-      title: "Don't miss any deal!",
-      description: "Sign up to receive new coupons and promo codes.",
+      title: "Get the next offer drop",
+      description: "Sign up for new coupons, product notes, and partner savings.",
       buttonLabel: "Subscribe",
     },
     rating: {
@@ -187,7 +229,12 @@ function parseStores(rows) {
       warn(`stores.csv line ${line}: logo empty for "${storeSlug}", using placeholder`);
     }
 
-    stores.set(storeSlug, {
+    const description =
+      trim(row.description) ||
+      `${storeName} offers curated deals, coupons, and partner savings.`;
+    const storeCategories = parseList(row.storeCategories);
+
+    const store = {
       ...storeDefaults(storeSlug, storeName),
       domainLabel: trim(row.domainLabel) || `${storeSlug}.example`,
       logo: {
@@ -198,11 +245,18 @@ function parseStores(rows) {
       pageTitle:
         trim(row.pageTitle) || `${storeName} Coupons and Promo Codes`,
       pagePeriodLabel: trim(row.pagePeriodLabel) || currentPeriodLabel(),
-      description:
-        trim(row.description) ||
-        `${storeName} offers curated deals, coupons, and partner savings.`,
+      description,
+      heroSupportText:
+        trim(row.heroSupportText) ||
+        `OfferLane tracks ${storeName} promotions, coupon codes, and partner links so shoppers can compare current savings before leaving for the merchant site.`,
+      storeCategories: storeCategories.length
+        ? storeCategories
+        : inferStoreCategories(storeSlug, storeName, description),
       offers: [],
-    });
+    };
+
+    addSeo(store, row, `/store/${storeSlug}`);
+    stores.set(storeSlug, store);
   });
 
   return stores;
@@ -302,6 +356,26 @@ function parseOffers(rows, stores) {
     }
   }
 
+  const storeSummaries = [...stores.values()].map((store) => ({
+    name: store.name,
+    slug: store.slug,
+    logo: store.logo.src,
+    href: `/store/${store.slug}`,
+    description: store.description,
+  }));
+
+  for (const store of stores.values()) {
+    const related = storeSummaries.filter((item) => item.slug !== store.slug);
+    if (!store.featuredStores.length) {
+      store.featuredStores = related.slice(0, 6).map(({ description, ...item }) => item);
+    }
+    if (!store.relatedStores.length) {
+      store.relatedStores = related
+        .slice(0, 6)
+        .map((item) => ({ name: item.name, href: item.href }));
+    }
+  }
+
   return stores;
 }
 
@@ -337,7 +411,8 @@ function parseProducts(rows) {
       warn(`products.csv line ${line}: product "${slug}" has no outboundUrl`);
     }
 
-    items.push({
+    const detailSections = parseJsonArray(row.detailSectionsJson);
+    const product = {
       productId,
       slug,
       badge: trim(row.badge) || "Exclusive",
@@ -355,7 +430,22 @@ function parseProducts(rows) {
       page: parseNum(row.page, 0),
       featured: parseBool(row.featured),
       category: trim(row.category),
-    });
+    };
+
+    if (trim(row.promoRibbon)) product.promoRibbon = trim(row.promoRibbon);
+    if (trim(row.vendorHref)) product.vendorHref = trim(row.vendorHref);
+    if (trim(row.shortDescription)) {
+      product.shortDescription = trim(row.shortDescription);
+    }
+    if (detailSections.length) product.detailSections = detailSections;
+
+    const similarProductSlugs = parseList(row.similarProductSlugs);
+    const popularProductSlugs = parseList(row.popularProductSlugs);
+    if (similarProductSlugs.length) product.similarProductSlugs = similarProductSlugs;
+    if (popularProductSlugs.length) product.popularProductSlugs = popularProductSlugs;
+
+    addSeo(product, row, `/products/${slug}`);
+    items.push(product);
   });
 
   items.forEach((item, index) => {

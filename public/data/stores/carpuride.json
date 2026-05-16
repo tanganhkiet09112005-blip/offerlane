@@ -1,16 +1,28 @@
 {
-  "featuredStores": [],
-  "relatedStores": [],
+  "featuredStores": [
+    {
+      "name": "Sample Tech",
+      "slug": "sample-tech",
+      "logo": "/assets/placeholders/store.svg",
+      "href": "/store/sample-tech"
+    }
+  ],
+  "relatedStores": [
+    {
+      "name": "Sample Tech",
+      "href": "/store/sample-tech"
+    }
+  ],
   "shareBlock": {
-    "title": "Share Now Stores",
+    "title": "Share this deal lane",
     "image": "/assets/placeholders/store-share.svg",
-    "description": "Discover curated deals and offers from this store.",
-    "ctaLabel": "Sign Up",
+    "description": "Save this store and revisit fresh partner offers when they refresh.",
+    "ctaLabel": "Join OfferLane",
     "ctaUrl": "/join"
   },
   "inlineSignup": {
-    "title": "Don't miss any deal!",
-    "description": "Sign up to receive new coupons and promo codes.",
+    "title": "Get the next offer drop",
+    "description": "Sign up for new coupons, product notes, and partner savings.",
     "buttonLabel": "Subscribe"
   },
   "rating": {
@@ -40,6 +52,11 @@
   "pageTitle": "CarPuride Coupons and Promo Codes",
   "pagePeriodLabel": "May - 2026",
   "description": "Smart car electronics and accessories",
+  "heroSupportText": "OfferLane tracks current CarPuride coupon codes and smart-car accessory deals before you leave for the merchant.",
+  "storeCategories": [
+    "auto-tech",
+    "car-accessories"
+  ],
   "offers": [
     {
       "offerId": "offer_001",
@@ -69,5 +86,10 @@
       "outboundUrl": "https://affiliate-link.com/carpuride-sale",
       "popularity": 49
     }
-  ]
+  ],
+  "seo": {
+    "title": "CarPuride Coupons & Deals | OfferLane",
+    "description": "Current CarPuride promo codes and smart-car accessory deals curated by OfferLane.",
+    "canonical": "/store/carpuride"
+  }
 }

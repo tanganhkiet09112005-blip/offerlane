@@ -10,7 +10,7 @@ const site = getSiteConfig();
 
 export const metadata: Metadata = {
   title: {
-    default: `${site.brand.name} — Deals & Affiliate Offers`,
+    default: `${site.brand.name} - Deals & Affiliate Offers`,
     template: `%s | ${site.brand.name}`,
   },
   description: site.brand.tagline,

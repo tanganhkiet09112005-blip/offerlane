@@ -9,6 +9,28 @@ export interface NavLink {
   href: string;
 }
 
+export interface SeoConfig {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+export interface HomeConfig {
+  featuredProductLimit?: number;
+  storeCategoryPills?: NavLink[];
+  headlinePostSlugs?: string[];
+  partnerLinks?: NavLink[];
+  socialLinks?: NavLink[];
+}
+
+export interface SearchResult {
+  title: string;
+  href: string;
+  type: string;
+}
+
 export interface SiteTheme {
   primary: string;
   accent: string;
@@ -46,7 +68,8 @@ export interface SiteConfig {
   theme: SiteTheme;
   header: SiteHeader;
   footer: SiteFooter;
-  searchMockResults: { title: string; href: string; type: string }[];
+  searchMockResults: SearchResult[];
+  home?: HomeConfig;
 }
 
 export interface ProductImage {
@@ -69,6 +92,13 @@ export interface Product {
   page: number;
   featured: boolean;
   category?: string;
+  promoRibbon?: string;
+  vendorHref?: string;
+  shortDescription?: string;
+  detailSections?: ContentSection[];
+  similarProductSlugs?: string[];
+  popularProductSlugs?: string[];
+  seo?: SeoConfig;
 }
 
 export interface ProductsPageData {
@@ -124,6 +154,13 @@ export interface BlogPostPreview {
   title: string;
   excerpt: string;
   date: string;
+  category?: string;
+  author?: string;
+  views?: number;
+  heroImage?: ProductImage;
+  sections?: ContentSection[];
+  relatedPostSlugs?: string[];
+  seo?: SeoConfig;
 }
 
 export interface CategoryPreview {
@@ -146,6 +183,7 @@ export interface ContentPageData {
   posts?: BlogPostPreview[];
   categoryList?: CategoryPreview[];
   storeList?: StorePreview[];
+  seo?: SeoConfig;
 }
 
 export interface StorePageData {
@@ -181,4 +219,7 @@ export interface StorePageData {
     description: string;
     buttonLabel: string;
   };
+  storeCategories?: string[];
+  heroSupportText?: string;
+  seo?: SeoConfig;
 }

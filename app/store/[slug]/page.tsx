@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getAllStoreSlugs, getStoreBySlug } from "@/lib/data";
 import { PageViewTracker } from "@/components/providers/PageViewTracker";
 import { StorePageClient } from "@/components/store/StorePageClient";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 export function generateStaticParams() {
   return getAllStoreSlugs().map((slug) => ({ slug }));
@@ -16,7 +17,8 @@ export async function generateMetadata({
   const store = getStoreBySlug(slug);
   if (!store) return { title: "Store Not Found" };
   return {
-    title: `${store.pageTitle} ${store.pagePeriodLabel}`,
+    title: store.seo?.title ?? `${store.pageTitle} ${store.pagePeriodLabel}`,
+    description: store.seo?.description ?? store.description,
   };
 }
 
@@ -35,6 +37,15 @@ export default async function StorePage({
       data-page-type="store-offers"
       data-store-slug={store.slug}
     >
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: `${store.pageTitle} ${store.pagePeriodLabel}`,
+          description: store.description,
+          url: `/store/${store.slug}`,
+        }}
+      />
       <PageViewTracker
         pageType="store-offers"
         pageSlug={store.slug}

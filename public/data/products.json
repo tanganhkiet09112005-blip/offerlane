@@ -24,7 +24,32 @@
       "outboundUrl": "https://affiliate-link.com/smart-screen-pro",
       "page": 1,
       "featured": true,
-      "category": "auto-tech"
+      "category": "auto-tech",
+      "promoRibbon": "Dashboard pick",
+      "vendorHref": "https://affiliate-link.com/smart-screen-pro",
+      "shortDescription": "A compact in-car screen for shoppers comparing dashboard upgrade deals.",
+      "detailSections": [
+        {
+          "heading": "Why it earns a lane",
+          "body": "Smart Screen Pro is positioned for drivers who want a cleaner display upgrade without rebuilding the whole dashboard."
+        },
+        {
+          "heading": "Before you click out",
+          "body": "Check merchant compatibility notes, mount options, and shipping terms before completing checkout on the partner site."
+        }
+      ],
+      "similarProductSlugs": [
+        "dash-cam-lite",
+        "wireless-carplay"
+      ],
+      "popularProductSlugs": [
+        "wireless-carplay"
+      ],
+      "seo": {
+        "title": "Smart Screen Pro Deal Review | OfferLane",
+        "description": "Compare Smart Screen Pro pricing and partner terms before leaving OfferLane.",
+        "canonical": "/products/smart-screen-pro"
+      }
     },
     {
       "productId": "prod_002",
@@ -43,7 +68,32 @@
       "outboundUrl": "https://affiliate-link.com/dash-cam-lite",
       "page": 1,
       "featured": false,
-      "category": "auto-tech"
+      "category": "auto-tech",
+      "promoRibbon": "Compact saver",
+      "vendorHref": "https://affiliate-link.com/dash-cam-lite",
+      "shortDescription": "A simple dash camera pick for deal hunters who want basic road recording.",
+      "detailSections": [
+        {
+          "heading": "Why it earns a lane",
+          "body": "Dash Cam Lite keeps the value story simple: a lower price point and practical recording features for everyday drivers."
+        },
+        {
+          "heading": "Before you click out",
+          "body": "Review storage card requirements and warranty terms on the merchant page before purchasing."
+        }
+      ],
+      "similarProductSlugs": [
+        "smart-screen-pro",
+        "wireless-carplay"
+      ],
+      "popularProductSlugs": [
+        "smart-screen-pro"
+      ],
+      "seo": {
+        "title": "Dash Cam Lite Deal Review | OfferLane",
+        "description": "Compare Dash Cam Lite pricing and merchant terms before leaving OfferLane.",
+        "canonical": "/products/dash-cam-lite"
+      }
     },
     {
       "productId": "prod_003",
@@ -62,7 +112,32 @@
       "outboundUrl": "https://affiliate-link.com/wireless-carplay",
       "page": 1,
       "featured": true,
-      "category": "auto-tech"
+      "category": "auto-tech",
+      "promoRibbon": "Cable-free pick",
+      "vendorHref": "https://affiliate-link.com/wireless-carplay",
+      "shortDescription": "A wireless adapter for shoppers upgrading wired CarPlay dashboards.",
+      "detailSections": [
+        {
+          "heading": "Why it earns a lane",
+          "body": "Wireless CarPlay Adapter is a focused accessory for drivers who want fewer cables and a faster in-car routine."
+        },
+        {
+          "heading": "Before you click out",
+          "body": "Confirm vehicle compatibility and return policy with the merchant before using an affiliate link."
+        }
+      ],
+      "similarProductSlugs": [
+        "smart-screen-pro",
+        "dash-cam-lite"
+      ],
+      "popularProductSlugs": [
+        "smart-screen-pro"
+      ],
+      "seo": {
+        "title": "Wireless CarPlay Adapter Deal Review | OfferLane",
+        "description": "Compare Wireless CarPlay Adapter pricing and partner terms before leaving OfferLane.",
+        "canonical": "/products/wireless-carplay"
+      }
     }
   ]
 }

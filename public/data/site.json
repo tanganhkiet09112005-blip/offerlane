@@ -2,7 +2,7 @@
   "brand": {
     "name": "OfferLane",
     "tagline": "Curated deals, verified savings",
-    "legalLine": "OfferLane Media Group — Registered affiliate publisher"
+    "legalLine": "OfferLane Media Group - Registered affiliate publisher"
   },
   "theme": {
     "primary": "#0c4a4e",
@@ -42,6 +42,26 @@
       { "label": "Contact", "href": "/contact" }
     ]
   },
+  "home": {
+    "featuredProductLimit": 8,
+    "storeCategoryPills": [
+      { "label": "Auto Tech", "href": "/category/auto-tech" },
+      { "label": "Smart Home", "href": "/category/smart-home" },
+      { "label": "Office Gear", "href": "/category/office" }
+    ],
+    "headlinePostSlugs": [
+      "stack-seasonal-coupons",
+      "smart-home-deals-guide"
+    ],
+    "partnerLinks": [
+      { "label": "CarPuride deals", "href": "/store/carpuride" },
+      { "label": "Sample Tech offers", "href": "/store/sample-tech" }
+    ],
+    "socialLinks": [
+      { "label": "Savings guides", "href": "/blogs" },
+      { "label": "Auto-tech picks", "href": "/category/auto-tech" }
+    ]
+  },
   "footer": {
     "brandBlurb": "OfferLane helps shoppers discover exclusive affiliate deals, coupon codes, and partner offers across trusted brands.",
     "usefulLinks": [
@@ -57,12 +77,7 @@
       "placeholder": "you@email.com"
     },
     "affiliateDisclosure": "OfferLane may earn a commission when you click links or redeem offers on partner sites. Prices and availability are set by merchants.",
-    "copyright": "© 2026 OfferLane Media Group. All rights reserved."
+    "copyright": "(c) 2026 OfferLane Media Group. All rights reserved."
   },
-  "searchMockResults": [
-    { "title": "DriveCore Dash Cam Bundle", "href": "/store/drive-core", "type": "Store" },
-    { "title": "Smart Thermo Pro", "href": "/products/smart-thermo-pro", "type": "Product" },
-    { "title": "How to stack seasonal coupons", "href": "/blogs/stack-seasonal-coupons", "type": "Blog" },
-    { "title": "HomeMotion Lighting Deals", "href": "/store/home-motion", "type": "Store" }
-  ]
+  "searchMockResults": []
 }

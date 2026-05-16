@@ -1,3 +1,3 @@
-storeSlug,storeName,domainLabel,logo,promoRibbon,pageTitle,pagePeriodLabel,description
-carpuride,CarPuride,carpuride.com,/assets/stores/carpuride.png,Earn up to 30% discount,CarPuride Coupons and Promo Codes,May - 2026,Smart car electronics and accessories
-sample-tech,Sample Tech,sample-tech.com,,Save up to 25% on tech,Sample Tech Coupons and Promo Codes,May - 2026,Curated tech deals and partner offers
+storeSlug,storeName,domainLabel,logo,promoRibbon,pageTitle,pagePeriodLabel,description,storeCategories,heroSupportText,seoTitle,seoDescription,ogImage
+carpuride,CarPuride,carpuride.com,/assets/stores/carpuride.png,Earn up to 30% discount,CarPuride Coupons and Promo Codes,May - 2026,Smart car electronics and accessories,auto-tech;car-accessories,,,
+sample-tech,Sample Tech,sample-tech.com,,Save up to 25% on tech,Sample Tech Coupons and Promo Codes,May - 2026,Curated tech deals and partner offers,smart-home;office,,,

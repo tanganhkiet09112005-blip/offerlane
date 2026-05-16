@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
 import { useShell } from "@/components/providers/ShellProvider";
 import { trackEvent } from "@/lib/analytics";
@@ -7,8 +8,28 @@ import styles from "./layout.module.css";
 
 export function AuthModal() {
   const { authOpen, closeAuth } = useShell();
+  const panelRef = useRef<HTMLElement>(null);
 
   if (!authOpen) return null;
+
+  const trapFocus = (e: React.KeyboardEvent) => {
+    if (e.key !== "Tab") return;
+    const panel = panelRef.current;
+    if (!panel) return;
+    const focusables = panel.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (!first || !last) return;
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
 
   return (
     <div
@@ -19,14 +40,18 @@ export function AuthModal() {
       aria-label="Sign in"
     >
       <div className="overlay-backdrop" onClick={closeAuth} aria-hidden />
-      <section className={`modal-panel ${styles.authPanel}`}>
+      <section
+        ref={panelRef}
+        className={`modal-panel ${styles.authPanel}`}
+        onKeyDown={trapFocus}
+      >
         <button
           type="button"
           className={styles.closeBtn}
           onClick={closeAuth}
           aria-label="Close sign in"
         >
-          ×
+          x
         </button>
         <h2>Sign In</h2>
         <form
@@ -37,7 +62,7 @@ export function AuthModal() {
         >
           <label>
             Email
-            <input type="email" name="email" required autoComplete="email" />
+            <input type="email" name="email" required autoComplete="email" autoFocus />
           </label>
           <label>
             Password

@@ -241,6 +241,11 @@ export function StorePageClient({ store }: { store: StorePageData }) {
                   {store.domainLabel}
                 </a>
                 <p>{store.description}</p>
+                {store.heroSupportText && (
+                  <p style={{ color: "var(--color-muted)" }}>
+                    {store.heroSupportText}
+                  </p>
+                )}
               </div>
             </div>
           </header>

@@ -1,16 +1,28 @@
 {
-  "featuredStores": [],
-  "relatedStores": [],
+  "featuredStores": [
+    {
+      "name": "CarPuride",
+      "slug": "carpuride",
+      "logo": "/assets/stores/carpuride.png",
+      "href": "/store/carpuride"
+    }
+  ],
+  "relatedStores": [
+    {
+      "name": "CarPuride",
+      "href": "/store/carpuride"
+    }
+  ],
   "shareBlock": {
-    "title": "Share Now Stores",
+    "title": "Share this deal lane",
     "image": "/assets/placeholders/store-share.svg",
-    "description": "Discover curated deals and offers from this store.",
-    "ctaLabel": "Sign Up",
+    "description": "Save this store and revisit fresh partner offers when they refresh.",
+    "ctaLabel": "Join OfferLane",
     "ctaUrl": "/join"
   },
   "inlineSignup": {
-    "title": "Don't miss any deal!",
-    "description": "Sign up to receive new coupons and promo codes.",
+    "title": "Get the next offer drop",
+    "description": "Sign up for new coupons, product notes, and partner savings.",
     "buttonLabel": "Subscribe"
   },
   "rating": {
@@ -40,6 +52,11 @@
   "pageTitle": "Sample Tech Coupons and Promo Codes",
   "pagePeriodLabel": "May - 2026",
   "description": "Curated tech deals and partner offers",
+  "heroSupportText": "Sample Tech collects practical gadget deals for desk setups and connected home upgrades.",
+  "storeCategories": [
+    "smart-home",
+    "office"
+  ],
   "offers": [
     {
       "offerId": "offer_st_001",
@@ -69,5 +86,10 @@
       "outboundUrl": "https://affiliate-link.com/sample-tech-bundle",
       "popularity": 21
     }
-  ]
+  ],
+  "seo": {
+    "title": "Sample Tech Coupons & Deals | OfferLane",
+    "description": "Current Sample Tech promo codes and partner offers curated by OfferLane.",
+    "canonical": "/store/sample-tech"
+  }
 }

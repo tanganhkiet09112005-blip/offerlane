@@ -73,20 +73,74 @@
   },
   "blogs": {
     "title": "Blogs",
-    "lead": "Guides on stacking coupons, comparing affiliate products, and seasonal deal calendars.",
+    "lead": "Editorial notes on deal timing, merchant terms, affiliate products, and smarter outbound shopping.",
     "sections": [],
     "posts": [
       {
         "slug": "stack-seasonal-coupons",
         "title": "How to stack seasonal coupons",
         "excerpt": "Learn when partner terms allow combining percentage codes with free-shipping offers.",
-        "date": "2026-05-01"
+        "date": "2026-05-01",
+        "category": "Savings Guides",
+        "author": "OfferLane Editorial",
+        "views": 482,
+        "heroImage": {
+          "src": "/assets/placeholders/store-share.svg",
+          "alt": "OfferLane savings guide"
+        },
+        "sections": [
+          {
+            "heading": "Start with the merchant rules",
+            "body": "Coupon stacking depends on the partner checkout, not the publisher page. Check whether the merchant accepts one code, multiple codes, automatic promotions, or account-only offers before counting a discount."
+          },
+          {
+            "heading": "Compare code value against shipping",
+            "body": "A smaller percentage code can beat a larger headline discount when shipping, minimum order value, or exclusions change the final cart total. OfferLane treats the merchant page as the final source of price truth."
+          },
+          {
+            "heading": "Keep a short testing routine",
+            "body": "Open the offer, copy the code, review the expiration date, and confirm the final checkout total before buying. If a code fails, switch to a current deal or direct merchant promotion."
+          }
+        ],
+        "relatedPostSlugs": ["smart-home-deals-guide"],
+        "seo": {
+          "title": "How to Stack Seasonal Coupons | OfferLane",
+          "description": "A practical OfferLane guide to checking coupon stacking rules, shipping terms, and final merchant prices.",
+          "canonical": "/blogs/stack-seasonal-coupons"
+        }
       },
       {
         "slug": "smart-home-deals-guide",
         "title": "Smart home deals: what to check before you buy",
         "excerpt": "Compatibility, warranty, and outbound merchant reputation matter as much as price.",
-        "date": "2026-04-18"
+        "date": "2026-04-18",
+        "category": "Buying Notes",
+        "author": "OfferLane Editorial",
+        "views": 356,
+        "heroImage": {
+          "src": "/assets/placeholders/product.svg",
+          "alt": "Smart home product checklist"
+        },
+        "sections": [
+          {
+            "heading": "Compatibility comes first",
+            "body": "Smart-home accessories often depend on hubs, apps, wireless standards, or regional power specs. Confirm compatibility on the merchant page before judging a deal by price alone."
+          },
+          {
+            "heading": "Read the warranty lane",
+            "body": "Warranty length, return windows, and support location can change the real value of a discount. OfferLane highlights savings, but the partner terms decide the final purchase conditions."
+          },
+          {
+            "heading": "Use reviews as a signal, not a shortcut",
+            "body": "Check repeated complaints around setup, app reliability, and replacement parts. A strong coupon is more useful when the product still fits your daily routine after delivery."
+          }
+        ],
+        "relatedPostSlugs": ["stack-seasonal-coupons"],
+        "seo": {
+          "title": "Smart Home Deals Checklist | OfferLane",
+          "description": "OfferLane's checklist for reviewing smart-home compatibility, warranty terms, and merchant conditions before clicking out.",
+          "canonical": "/blogs/smart-home-deals-guide"
+        }
       }
     ]
   },
@@ -156,6 +210,12 @@
         "name": "CarPuride",
         "description": "In-car smart displays and accessories.",
         "href": "/store/carpuride"
+      },
+      {
+        "slug": "sample-tech",
+        "name": "Sample Tech",
+        "description": "Curated tech deals and partner offers.",
+        "href": "/store/sample-tech"
       }
     ]
   }

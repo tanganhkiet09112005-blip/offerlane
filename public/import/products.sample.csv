@@ -1,4 +1,4 @@
-productId,slug,badge,title,imageSrc,imageAlt,currentPrice,compareAtPrice,currency,vendor,internalUrl,outboundUrl,page,featured,category
-prod_001,smart-screen-pro,Exclusive,Smart Screen Pro,/assets/products/smart-screen-pro.jpg,Smart Screen Pro product image,79,129,USD,Sample Vendor,/products/smart-screen-pro,https://affiliate-link.com/smart-screen-pro,1,true,Car Accessories
-prod_002,dash-cam-lite,Exclusive,Dash Cam Lite,,Dash Cam Lite dash camera,59,,USD,Auto Vision,/products/dash-cam-lite,https://affiliate-link.com/dash-cam-lite,1,false,Car Accessories
-prod_003,wireless-carplay,Exclusive,Wireless CarPlay Adapter,/assets/products/wireless-carplay.jpg,Wireless CarPlay adapter,89,119,USD,CarPuride,/products/wireless-carplay,https://affiliate-link.com/wireless-carplay,1,true,Car Accessories
+productId,slug,badge,title,imageSrc,imageAlt,currentPrice,compareAtPrice,currency,vendor,internalUrl,outboundUrl,page,featured,category,promoRibbon,vendorHref,shortDescription,detailSectionsJson,similarProductSlugs,popularProductSlugs,seoTitle,seoDescription,ogImage
+prod_001,smart-screen-pro,Exclusive,Smart Screen Pro,/assets/products/smart-screen-pro.jpg,Smart Screen Pro product image,79,129,USD,Sample Vendor,/products/smart-screen-pro,https://affiliate-link.com/smart-screen-pro,1,true,auto-tech,,,,,,,,
+prod_002,dash-cam-lite,Exclusive,Dash Cam Lite,,Dash Cam Lite dash camera,59,,USD,Auto Vision,/products/dash-cam-lite,https://affiliate-link.com/dash-cam-lite,1,false,auto-tech,,,,,,,,
+prod_003,wireless-carplay,Exclusive,Wireless CarPlay Adapter,/assets/products/wireless-carplay.jpg,Wireless CarPlay adapter,89,119,USD,CarPuride,/products/wireless-carplay,https://affiliate-link.com/wireless-carplay,1,true,auto-tech,,,,,,,,

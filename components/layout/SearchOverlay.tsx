@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useShell } from "@/components/providers/ShellProvider";
 import { trackEvent } from "@/lib/analytics";
@@ -9,6 +9,7 @@ import styles from "./layout.module.css";
 export function SearchOverlay() {
   const { site, searchOpen, closeSearch } = useShell();
   const [query, setQuery] = useState("");
+  const panelRef = useRef<HTMLElement>(null);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -25,6 +26,25 @@ export function SearchOverlay() {
     trackEvent("search_submit", { query });
   };
 
+  const trapFocus = (e: React.KeyboardEvent) => {
+    if (e.key !== "Tab") return;
+    const panel = panelRef.current;
+    if (!panel) return;
+    const focusables = panel.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (!first || !last) return;
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
+
   return (
     <div
       className={styles.searchOverlay}
@@ -34,14 +54,18 @@ export function SearchOverlay() {
       aria-label="Search"
     >
       <div className="overlay-backdrop" onClick={closeSearch} aria-hidden />
-      <section className={`modal-panel ${styles.searchPanel}`}>
+      <section
+        ref={panelRef}
+        className={`modal-panel ${styles.searchPanel}`}
+        onKeyDown={trapFocus}
+      >
         <button
           type="button"
           className={styles.closeBtn}
           onClick={closeSearch}
           aria-label="Close search"
         >
-          ×
+          x
         </button>
         <h2>{site.header.searchLabel}</h2>
         <form onSubmit={handleSubmit}>
@@ -58,7 +82,7 @@ export function SearchOverlay() {
             autoFocus
           />
         </form>
-        <p className="sr-only">Blog Results</p>
+        <p className="sr-only">Search results</p>
         {results.length > 0 ? (
           <ul className={styles.searchResults}>
             {results.map((r) => (
@@ -74,7 +98,7 @@ export function SearchOverlay() {
                   }}
                 >
                   <strong>{r.title}</strong>
-                  <span> — {r.type}</span>
+                  <span> - {r.type}</span>
                 </Link>
               </li>
             ))}
@@ -83,7 +107,7 @@ export function SearchOverlay() {
           <p className={styles.searchEmpty}>No results found. Try another term.</p>
         )}
         <Link href="/blogs" className={styles.searchViewAll} onClick={closeSearch}>
-          View All Blogs
+          View all blogs
         </Link>
       </section>
     </div>
