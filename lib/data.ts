@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import type {
   BlogPostPreview,
+  CategoryPreview,
   ContentPageData,
   Product,
   ProductsPageData,
@@ -278,6 +279,12 @@ export function getAllStoreSlugs(): string[] {
 export function getCategoryTitle(slug: string): string {
   const category = pages.categories?.categoryList?.find((cat) => cat.slug === slug);
   return category?.title ?? titleFromSlug(slug);
+}
+
+/** Other taxonomy chips for category pages (excludes current slug). */
+export function getRelatedCategories(excludeSlug: string): CategoryPreview[] {
+  const list = pages.categories?.categoryList ?? [];
+  return list.filter((c) => c.slug !== excludeSlug);
 }
 
 /** Return up to `limit` stores for home page featured section. */

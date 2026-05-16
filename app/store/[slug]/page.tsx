@@ -31,6 +31,10 @@ export default async function StorePage({
   const store = getStoreBySlug(slug);
   if (!store) notFound();
 
+  const siteUrl = (
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com"
+  ).replace(/\/$/, "");
+
   return (
     <main
       className="container page-main"
@@ -43,7 +47,33 @@ export default async function StorePage({
           "@type": "WebPage",
           name: `${store.pageTitle} ${store.pagePeriodLabel}`,
           description: store.description,
-          url: `/store/${store.slug}`,
+          url: `${siteUrl}/store/${store.slug}`,
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: `${siteUrl}/`,
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Stores",
+              item: `${siteUrl}/stores`,
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: store.name,
+              item: `${siteUrl}/store/${store.slug}`,
+            },
+          ],
         }}
       />
       <PageViewTracker

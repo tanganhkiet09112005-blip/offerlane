@@ -5,12 +5,14 @@ import {
   getCategoryPage,
   getCategoryProducts,
   getCategoryStores,
+  getRelatedCategories,
 } from "@/lib/data";
-import { ContentPageView } from "@/components/content/ContentPageView";
 import { ProductCard } from "@/components/products/ProductCard";
 import { PageViewTracker } from "@/components/providers/PageViewTracker";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { StoreMiniCard } from "@/components/store/StoreMiniCard";
 import productStyles from "@/components/products/products.module.css";
+import styles from "../category.module.css";
 
 export function generateStaticParams() {
   return getAllCategorySlugs().map((slug) => ({ slug }));
@@ -39,9 +41,19 @@ export default async function CategoryPage({
   if (!data) notFound();
   const products = getCategoryProducts(slug);
   const stores = getCategoryStores(slug);
+  const relatedCategories = getRelatedCategories(slug);
+
+  const hasStores = stores.length > 0;
+  const hasProducts = products.length > 0;
+  const storeCtaHref =
+    stores.length > 0 ? `/store/${stores[0].slug}` : "/stores";
 
   return (
-    <main className="container" data-page-type="category">
+    <main
+      className={`container page-main ${styles.categoryMain}`}
+      data-page-type="category"
+      data-category-slug={slug}
+    >
       <PageViewTracker
         pageType="category"
         pageSlug={slug}
@@ -59,79 +71,116 @@ export default async function CategoryPage({
           url: `/category/${slug}`,
         }}
       />
-      <ContentPageView
-        data={data}
-        breadcrumb={[
-          { label: "Home", href: "/" },
-          { label: "Categories", href: "/categories" },
-          { label: data.title },
-        ]}
-      >
-        <section style={{ marginTop: "2rem" }} aria-labelledby="category-stores-title">
-          <h2 id="category-stores-title" className="section-title">
-            Stores in {data.title}
-          </h2>
-          {stores.length > 0 ? (
-            <ul style={{ display: "grid", gap: "1rem", padding: 0, listStyle: "none" }}>
-              {stores.map((store) => (
-                <li
-                  key={store.slug}
-                  style={{
-                    background: "var(--color-surface)",
-                    border: "1px solid var(--color-border)",
-                    borderRadius: "var(--radius)",
-                    padding: "1rem",
-                  }}
-                >
-                  <Link href={`/store/${store.slug}`} style={{ fontWeight: 700 }}>
-                    {store.name}
-                  </Link>
-                  <p style={{ margin: "0.35rem 0 0", color: "var(--color-muted)" }}>
-                    {store.description}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p style={{ color: "var(--color-muted)" }}>
-              No stores are tagged for this category yet. Product picks are still
-              available below.
-            </p>
-          )}
-        </section>
 
-        <section style={{ marginTop: "2rem" }} aria-labelledby="category-products-title">
-          <h2 id="category-products-title" className="section-title">
-            Products in {data.title}
-          </h2>
-          {products.length > 0 ? (
-            <div className={productStyles.grid}>
-              {products.map((product, index) => (
-                <ProductCard
-                  key={product.productId}
-                  product={product}
-                  position={index + 1}
-                  listName={`category-${slug}`}
-                />
-              ))}
-            </div>
-          ) : (
-            <p style={{ color: "var(--color-muted)" }}>
-              No products are assigned to this category yet. Check back after the
-              next CMS import or browse all products below.
-            </p>
-          )}
-        </section>
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        <Link href="/">Home</Link>
+        <span className="breadcrumb__sep" />
+        <Link href="/categories">Categories</Link>
+        <span className="breadcrumb__sep" />
+        <span aria-current="page">{data.title}</span>
+      </nav>
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginTop: "2rem" }}>
-          <Link href="/products" className="btn btn--primary">
-            View all products
-          </Link>
-          <Link href="/store/carpuride" className="btn btn--outline">
-            Featured store deals
-          </Link>
+      <header className={styles.hero}>
+        <h1 className={`page-title ${styles.heroTitle}`}>{data.title}</h1>
+        <p className={styles.heroLead}>{data.lead}</p>
+        {relatedCategories.length > 0 ? (
+          <ul className={styles.chips} aria-label="Related categories">
+            {relatedCategories.map((cat) => (
+              <li key={cat.slug}>
+                <Link href={`/category/${cat.slug}`} className={styles.chip}>
+                  {cat.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </header>
+
+      {!hasStores && !hasProducts ? (
+        <div className={styles.emptyState}>
+          <p>
+            Nothing is tagged to <strong>{data.title}</strong> yet. Browse all
+            products or open a featured store for live coupons and deals.
+          </p>
+          <div className={styles.ctaRow}>
+            <Link href="/products" className="btn btn--primary btn--cta">
+              View all products
+            </Link>
+            <Link href="/stores" className="btn btn--outline">
+              Browse stores
+            </Link>
+          </div>
         </div>
-      </ContentPageView>
+      ) : null}
+
+      {hasStores || hasProducts ? (
+        <>
+          <section
+            className={styles.section}
+            aria-labelledby="category-stores-heading"
+          >
+            <h2 id="category-stores-heading" className={styles.sectionTitle}>
+              Stores in {data.title}
+            </h2>
+            {hasStores ? (
+              <div className={styles.storeGrid}>
+                {stores.map((store) => (
+                  <StoreMiniCard
+                    key={store.slug}
+                    name={store.name}
+                    href={`/store/${store.slug}`}
+                    description={store.description}
+                    logoSrc={store.logo?.src}
+                    ribbon={store.promoRibbon}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className={styles.emptyHint}>
+                No stores are tagged for this category yet. Product picks may
+                still appear below, or browse all stores for current offers.
+              </p>
+            )}
+          </section>
+
+          <section
+            className={styles.section}
+            aria-labelledby="category-products-heading"
+          >
+            <h2 id="category-products-heading" className={styles.sectionTitle}>
+              Products in {data.title}
+            </h2>
+            {hasProducts ? (
+              <div className={productStyles.grid}>
+                {products.map((product, index) => (
+                  <ProductCard
+                    key={product.productId}
+                    product={product}
+                    position={index + 1}
+                    listName={`category-${slug}`}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className={styles.emptyHint}>
+                No products are assigned to this category yet. Try another topic
+                from the chips above or open the full catalog.
+              </p>
+            )}
+          </section>
+        </>
+      ) : null}
+
+      <div className={`${styles.ctaRow} ${styles.footerCtas}`}>
+        <Link href="/products" className="btn btn--primary">
+          View all products
+        </Link>
+        <Link href={storeCtaHref} className="btn btn--outline">
+          {stores.length > 0
+            ? `Deals at ${stores[0].name}`
+            : "Browse all stores"}
+        </Link>
+      </div>
     </main>
   );
 }
